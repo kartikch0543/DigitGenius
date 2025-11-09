@@ -1,0 +1,128 @@
+{
+  "users": [
+    {
+      "id": "1762684976995",
+      "name": "kartik choudhary",
+      "email": "kartikchoudhary0543@gmail.com",
+      "password": "$2a$10$jtnweRtAywK6tIqfLhlHa.jFv1SyLgRcOEMDvR5OSFe6yVRJ7wqri",
+      "provider": "local"
+    },
+    {
+      "id": "1762685522720",
+      "name": "kartik choudhary",
+      "email": "kartikchoudhary880543@gmail.com",
+      "password": "$2a$10$GAYcN4hbKF6W1DNAkpxb/.yyyHaFHkZdTkRN6RVEri1igucWgVtwy",
+      "provider": "local"
+    },
+    {
+      "id": "1762693602134",
+      "name": "kartik choudhary",
+      "email": "kartikchoudhary054333@gmail.com",
+      "password": "$2a$10$oyxVNHZtgJJGZNYsAQ3RvOPHFNEDl/8MEZUCfz0rY.Rjo2LqQ5/ku",
+      "provider": "local"
+    },
+    {
+      "id": "1762699557696",
+      "name": "kartik",
+      "email": "1230480q4@neocolab.ai",
+      "password": "$2a$10$zVQW6gOvd0Qo.Na80EnIWONJjXWhMCbaROuWGbn/ozK4BvTkfOT3G",
+      "provider": "local"
+    },
+    {
+      "id": "1762702290123",
+      "name": "kartik",
+      "email": "1230461110@neocolab.ai",
+      "password": "$2a$10$nOcqMHVOe47vH4jnOU.1Fu6ND6io8/czMJ0YftPMz1jXLlSyLhASG",
+      "provider": "local"
+    }
+  ],
+  "orders": [
+    {
+      "id": "AOtIvfUM-cpi0cNSfDjTd",
+      "userId": "1762686722139",
+      "items": [
+        {
+          "id": "p001",
+          "brand": "Dell",
+          "name": "Dell Power 151",
+          "price": 1499,
+          "mrp": 1798,
+          "rating": 4,
+          "img": "https://picsum.photos/seed/dgp001/900/600",
+          "collection": "power",
+          "specs": {
+            "ram": "-",
+            "storage": "128GB",
+            "battery": "4000mAh",
+            "connectivity": "Bluetooth 5.3",
+            "warranty": "6 months"
+          },
+          "desc": "Dell Dell Power 151 delivers solid performance with Bluetooth 5.3 and 6 months warranty.",
+          "qty": 1
+        }
+      ],
+      "address": {},
+      "status": "Placed",
+      "createdAt": 1762691787477,
+      "statusHistory": [
+        {
+          "status": "Placed",
+          "at": 1762691787477
+        }
+      ]
+    },
+    {
+      "id": "hDvei1HUobDQ84j-omxDY",
+      "userId": "1762699557696",
+      "items": [
+        {
+          "id": "p006",
+          "brand": "HP",
+          "name": "HP Buds 99",
+          "price": 14999,
+          "mrp": 17998,
+          "rating": 4.2,
+          "img": "https://picsum.photos/seed/dgp006/900/600",
+          "collection": "tablets",
+          "specs": {
+            "ram": "2GB",
+            "storage": "32GB",
+            "battery": "1000mAh",
+            "connectivity": "BT 5.2 + Wi‑Fi",
+            "warranty": "6 months"
+          },
+          "desc": "HP HP Buds 99 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty.",
+          "qty": 1
+        },
+        {
+          "id": "p001",
+          "brand": "Dell",
+          "name": "Dell Power 151",
+          "price": 1499,
+          "mrp": 1798,
+          "rating": 4,
+          "img": "https://picsum.photos/seed/dgp001/900/600",
+          "collection": "power",
+          "specs": {
+            "ram": "-",
+            "storage": "128GB",
+            "battery": "4000mAh",
+            "connectivity": "Bluetooth 5.3",
+            "warranty": "6 months"
+          },
+          "desc": "Dell Dell Power 151 delivers solid performance with Bluetooth 5.3 and 6 months warranty.",
+          "qty": 2
+        }
+      ],
+      "address": {},
+      "status": "Placed",
+      "createdAt": 1762700108446,
+      "statusHistory": [
+        {
+          "status": "Placed",
+          "at": 1762700108446
+        }
+      ]
+    }
+  ]
+}

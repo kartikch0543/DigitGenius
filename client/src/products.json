@@ -1,0 +1,1010 @@
+[
+  {
+    "id": "p001",
+    "brand": "Aerosync Snap",
+    "name": "Aerosync Snap",
+    "price":  1599,
+    "mrp": 1979,
+    "rating": 4.0,
+    "img": "https://ambraneindia.com/cdn/shop/files/1_1_5b43438e-5d4c-4026-bbfb-ea6ad49df184.jpg?v=1742817655&width=300",
+    "collection": "power",
+    "specs": {
+      "ram": "-",
+      "storage": "",
+      "battery": "10000mAh",
+      "connectivity": "",
+      "warranty": "6 months"
+    },
+    "desc": "Introducing the Aerosync Snap, a powerful 10000 mAh MagSafe power bank designed for seamless charging on the go. With a maximum output of 22.5W and multiple charging ports, including a 22W Type-C, 22.5W USB-A, and 15W MagSafe output, this power bank offers versatile and efficient power delivery. It supports PD 3.0, QC 3.0, VOOC, and PPS protocols, ensuring compatibility with a wide range of devices. The Aerosync Snap features a premium rubberized coating and 5 LED indicators for easy status monitoring. Compatible with iPhone 12 and above for MagSafe, as well as all iPhone 8 and above models and Android phones through wired and wireless connections, this power bank is your reliable charging companion. "
+  },
+  {
+    "id": "p002",
+    "brand": "AerosynQ MagSurge",
+    "name": "AerosynQ MagSurge",
+    "price": 17599,
+    "mrp": 21119,
+    "rating": 4.7,
+    "img": "https://ambraneindia.com/cdn/shop/files/MagsurgePurple-HeroPNG_png.webp?v=1752495015&width=900",
+    "collection": "power",
+    "specs": {
+      "ram": "",
+      "storage": "",
+      "battery": "10000mAh",
+      "connectivity": "",
+      "warranty": "6 months"
+    },
+    "desc": "Make the most of your Qi-compatible devices with AerosynQ MagSurge, a Qi2 certified magSafe powerbank. Charge on-the-go like never before with 22W BoostedSpeed™– lesser wait time and faster charging. Its compact design and a mega 10000 mAh capacity are perfect for your travelling adventures while a built-in stand adds convenience for everyday hands-free use, simply attach your device and keep on streaming while charging! Experience wide compatibility via a Type-C port and charge up airpods, iPad, android, and lightning devices effortlessly."
+  },
+  {
+    "id": "p003",
+    "brand": "Sony WH-CH720N ",
+    "name": "Sony WH-CH720N ",
+    "price": 5049,
+    "mrp": 7259,
+    "rating": 4.4,
+    "img": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQeoQ2TurVLi5bbrK3_vn6rg0Riztzg5089jSlLu1jNzqpfBE03MKxxNckOnho0Plw5BgN42B_EgKmEDC5V4Y7fPb1LgLn9d4tAxGkecY4JjA8k4btyMxr9kw",
+    "collection": "audio",
+    "specs": {
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "Sony WH-CH720N Wireless Noise Cancelling Headphones."
+  },
+  {
+    "id": "p004",
+    "brand": "Asus Vivobook ",
+    "name": "Asus Vivobook ",
+    "price": 38099,
+    "mrp": 41999,
+    "rating": 4.1,
+    "img": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTC-zPcMn6giu3a5YVyxRKHJzVFlccsLPctDVafi6E5BzuRonlXASTQnNlHPF0cIsjyCQL2RKvQSmc81quiDuLfVXZ6HTy2cRBbct_4xdQkNhtaUJjhJ8wkOw",
+    "collection": "laptops",
+    "specs": {
+      "ram": "8GB",
+      "storage": "126GB",
+      "battery": "5000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 months"
+    },
+    "desc": "Asus Vivobook Go 15 Amd Ryzen Quad Core 512 Gb Ssd/Windows 11 Home."
+  },
+  {
+    "id": "p005",
+    "brand": "Apple",
+    "name": "Apple Watch SE 3",
+    "price": 22199,
+    "mrp": 29639,
+    "rating": 4.5,
+    "img": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSOfUSU1s_7ewVl5cRB1yGS9hDCvqRPtVt8RFhv8zHzkKfbTxXfOJAKVm7l8Lq75Bhgpf0300VToIGMfE2PMcjsdwqZoOVvPFZbguQF7anYqEkUb08RLdrGFIgajLwL7XZet0CPrNo&usqp=CAc",
+    "collection": "wearables",
+    "specs": {
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "6 months"
+    },
+    "desc": "delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+  },
+  {
+    "id": "p006",
+    "brand": "Samsung ",
+    "name": "Samsung Tab S10",
+    "price": 96499,
+    "mrp": 119799,
+    "rating": 4.2,
+    "img": "https://cdn.jiostore.online/v2/jmd-asp/jdprod/wrkr/products/pictures/item/free/resize-w:450/oE0dQO1e06-samsungtabs10plus-494493054-i-1-1200wx1200h.jpeg",
+    "collection": "tablets",
+    "specs": {
+      "ram": "12GB",
+      "storage": "256GB",
+      "battery": "1000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "Samsung Tab S10+ 31.49 cm (12.4 inch) WiFi + 5G Tablet with S-Pen, 12 GB RAM, 256 GB, Gray, X826BA."
+  },
+  {
+    "id": "p007",
+    "brand": "Samsung ",
+    "name": "Samsung 25 W",
+    "price": 1049,
+    "mrp": 3055,
+    "rating": 4.7,
+    "img": "https://cdn.jiostore.online/v2/jmd-asp/jdprod/wrkr/products/pictures/item/free/resize-w:450/pPToDOaZ4A-samsung-travel-adapter-494353402-i-1-1200wx1200h.jpeg",
+    "collection": "chargers",
+    "specs": {
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
+      "warranty": "1 year"
+    },
+    "desc": "Samsung 25 W Adapter, Type-C, Fast Charging, Zero Standby Power Consumption, GAN Technology, Without Cable, White."
+  },
+  {
+    "id": "p008",
+    "brand": "Apple",
+    "name": "Apple iPhone 17 Pro",
+    "price": 174900,
+    "mrp": 189000,
+    "rating": 3.9,
+    "img": "https://cdn.jiostore.online/v2/jmd-asp/jdprod/wrkr/products/pictures/item/free/resize-w:450/LrI6IL4tmq-apple-iphone-17-pro-494741641-i-1-1200wx1200h.jpeg",
+    "collection": "phones",
+    "specs": {
+      "ram": "4GB",
+      "storage": "256GB",
+      "battery": "",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "Rear Camera Feature : Smart HDR 5, Sapphire Crystal Lens Cover, Next-generation portraits with Focus and Depth Control, Portrait Lighting with six effects, Auto Image Stabilisation."
+  },
+  {
+    "id": "p009",
+    "brand": "boat",
+    "name": "boAt PD ",
+    "price": 499,
+    "mrp": 579,
+    "rating": 3.9,
+    "img": "https://cdn.jiostore.online/v2/jmd-asp/jdprod/wrkr/products/pictures/item/free/resize-w:450/bN9OnpCPCv-boat-pd-single-port-20-w-493838478-i-1-1200wx1200h.jpeg",
+    "collection": "chargers",
+    "specs": {
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
+      "warranty": "6 months"
+    },
+    "desc": "boAt PD Single Port 20 W Type-C Fast Charging Wall Charger, Smart IC protection, Intelligent Voltage and Current Management, Corrosion Resistant Pins, Compatible with Android phones and iPhone 11 and above, White."
+  },
+  {
+    "id": "p010",
+    "brand": "ApexTech",
+    "name": "ApexTech Charge 216",
+    "price": 7699,
+    "mrp": 9239,
+    "rating": 4.3,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "6GB",
+      "storage": "128GB",
+      "battery": "5000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Charge 216 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p011",
+    "brand": "ApexTech",
+    "name": "ApexTech Phone 301",
+    "price": 10999,
+    "mrp": 13199,
+    "rating": 4.4,
+    "img": "https://picsum.photos/seed/tablet/900/600",
+    "collection": "tablets",
+    "specs": {
+      "ram": "6GB",
+      "storage": "-",
+      "battery": "5000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Phone 301 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+  },
+  {
+    "id": "p012",
+    "brand": "ApexTech",
+    "name": "ApexTech Phone 161",
+    "price": 7699,
+    "mrp": 9239,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "-",
+      "storage": "64GB",
+      "battery": "500mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Phone 161 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p013",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 198",
+    "price": 1649,
+    "mrp": 1979,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/accessory/900/600",
+    "collection": "accessories",
+    "specs": {
+      "ram": "6GB",
+      "storage": "64GB",
+      "battery": "500mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Note 198 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p014",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 314",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.2,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "6GB",
+      "storage": "16GB",
+      "battery": "4000mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Book 314 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+  },
+  {
+    "id": "p015",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 30",
+    "price": 3299,
+    "mrp": 3959,
+    "rating": 3.9,
+    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "collection": "power",
+    "specs": {
+      "ram": "8GB",
+      "storage": "32GB",
+      "battery": "1000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Note 30 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+  },
+  {
+    "id": "p016",
+    "brand": "ApexTech",
+    "name": "ApexTech Buds 437",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.6,
+    "img": "https://picsum.photos/seed/tablet/900/600",
+    "collection": "tablets",
+    "specs": {
+      "ram": "6GB",
+      "storage": "32GB",
+      "battery": "500mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Buds 437 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+  },
+  {
+    "id": "p017",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 435",
+    "price": 16499,
+    "mrp": 19799,
+    "rating": 4.3,
+    "img": "https://picsum.photos/seed/accessory/900/600",
+    "collection": "accessories",
+    "specs": {
+      "ram": "-",
+      "storage": "16GB",
+      "battery": "1000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Note 435 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p018",
+    "brand": "ApexTech",
+    "name": "ApexTech Pad 115",
+    "price": 65999,
+    "mrp": 79199,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/headphone/900/600",
+    "collection": "audio",
+    "specs": {
+      "ram": "4GB",
+      "storage": "32GB",
+      "battery": "300mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Pad 115 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p019",
+    "brand": "ApexTech",
+    "name": "ApexTech Charge 287",
+    "price": 32999,
+    "mrp": 39599,
+    "rating": 4.3,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "-",
+      "storage": "-",
+      "battery": "5000mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Charge 287 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+  },
+  {
+    "id": "p020",
+    "brand": "ApexTech",
+    "name": "ApexTech Pad 65",
+    "price": 10999,
+    "mrp": 13199,
+    "rating": 4.9,
+    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "collection": "power",
+    "specs": {
+      "ram": "8GB",
+      "storage": "64GB",
+      "battery": "300mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Pad 65 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+  },
+  {
+    "id": "p021",
+    "brand": "ApexTech",
+    "name": "ApexTech Power 333",
+    "price": 5499,
+    "mrp": 6599,
+    "rating": 4.8,
+    "img": "https://picsum.photos/seed/speaker/900/600",
+    "collection": "audio",
+    "specs": {
+      "ram": "8GB",
+      "storage": "-",
+      "battery": "4000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Power 333 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+  },
+  {
+    "id": "p022",
+    "brand": "ApexTech",
+    "name": "ApexTech Phone 77",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/tablet/900/600",
+    "collection": "tablets",
+    "specs": {
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "500mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Phone 77 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+  },
+  {
+    "id": "p023",
+    "brand": "ApexTech",
+    "name": "ApexTech Pad 236",
+    "price": 2749,
+    "mrp": 3299,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/tablet/900/600",
+    "collection": "tablets",
+    "specs": {
+      "ram": "6GB",
+      "storage": "-",
+      "battery": "1000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Pad 236 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p024",
+    "brand": "ApexTech",
+    "name": "ApexTech Power 301",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 4.0,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "4GB",
+      "storage": "-",
+      "battery": "1000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Power 301 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+  },
+  {
+    "id": "p025",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 329",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.5,
+    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "collection": "power",
+    "specs": {
+      "ram": "4GB",
+      "storage": "32GB",
+      "battery": "1000mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 329 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+  },
+  {
+    "id": "p026",
+    "brand": "ApexTech",
+    "name": "ApexTech Buds 253",
+    "price": 3299,
+    "mrp": 3959,
+    "rating": 4.8,
+    "img": "https://picsum.photos/seed/accessory/900/600",
+    "collection": "accessories",
+    "specs": {
+      "ram": "-",
+      "storage": "16GB",
+      "battery": "4000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Buds 253 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p027",
+    "brand": "ApexTech",
+    "name": "ApexTech Charge 384",
+    "price": 10999,
+    "mrp": 13199,
+    "rating": 3.9,
+    "img": "https://picsum.photos/seed/headphone/900/600",
+    "collection": "audio",
+    "specs": {
+      "ram": "2GB",
+      "storage": "128GB",
+      "battery": "300mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Charge 384 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p028",
+    "brand": "ApexTech",
+    "name": "ApexTech Phone 364",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.4,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "4GB",
+      "storage": "16GB",
+      "battery": "1000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Phone 364 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p029",
+    "brand": "ApexTech",
+    "name": "ApexTech Pad 433",
+    "price": 1649,
+    "mrp": 1979,
+    "rating": 4.4,
+    "img": "https://picsum.photos/seed/accessory/900/600",
+    "collection": "accessories",
+    "specs": {
+      "ram": "8GB",
+      "storage": "-",
+      "battery": "1000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Pad 433 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p030",
+    "brand": "ApexTech",
+    "name": "ApexTech Watch 124",
+    "price": 2749,
+    "mrp": 3299,
+    "rating": 4.4,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "2GB",
+      "storage": "-",
+      "battery": "300mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Watch 124 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+  },
+  {
+    "id": "p031",
+    "brand": "ApexTech",
+    "name": "ApexTech Power 273",
+    "price": 21999,
+    "mrp": 26399,
+    "rating": 4.6,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "2GB",
+      "storage": "-",
+      "battery": "500mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Power 273 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p032",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 88",
+    "price": 3299,
+    "mrp": 3959,
+    "rating": 4.0,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "-",
+      "storage": "32GB",
+      "battery": "5000mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Book 88 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+  },
+  {
+    "id": "p033",
+    "brand": "ApexTech",
+    "name": "ApexTech Watch 437",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 4.3,
+    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "collection": "power",
+    "specs": {
+      "ram": "8GB",
+      "storage": "32GB",
+      "battery": "500mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Watch 437 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+  },
+  {
+    "id": "p034",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 284",
+    "price": 16499,
+    "mrp": 19799,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "collection": "power",
+    "specs": {
+      "ram": "2GB",
+      "storage": "64GB",
+      "battery": "500mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Book 284 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p035",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 18",
+    "price": 10999,
+    "mrp": 13199,
+    "rating": 4.5,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "2GB",
+      "storage": "128GB",
+      "battery": "300mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 18 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p036",
+    "brand": "ApexTech",
+    "name": "ApexTech Watch 125",
+    "price": 65999,
+    "mrp": 79199,
+    "rating": 3.9,
+    "img": "https://picsum.photos/seed/laptop/900/600",
+    "collection": "laptops",
+    "specs": {
+      "ram": "6GB",
+      "storage": "32GB",
+      "battery": "4000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Watch 125 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p037",
+    "brand": "ApexTech",
+    "name": "ApexTech Pad 277",
+    "price": 7699,
+    "mrp": 9239,
+    "rating": 4.5,
+    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "collection": "power",
+    "specs": {
+      "ram": "6GB",
+      "storage": "64GB",
+      "battery": "1000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Pad 277 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+  },
+  {
+    "id": "p038",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 175",
+    "price": 32999,
+    "mrp": 39599,
+    "rating": 4.5,
+    "img": "https://picsum.photos/seed/laptop/900/600",
+    "collection": "laptops",
+    "specs": {
+      "ram": "-",
+      "storage": "32GB",
+      "battery": "5000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 175 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p039",
+    "brand": "ApexTech",
+    "name": "ApexTech Power 198",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 4.7,
+    "img": "https://picsum.photos/seed/headphone/900/600",
+    "collection": "audio",
+    "specs": {
+      "ram": "-",
+      "storage": "16GB",
+      "battery": "5000mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Power 198 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+  },
+  {
+    "id": "p040",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 51",
+    "price": 5499,
+    "mrp": 6599,
+    "rating": 4.9,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "-",
+      "storage": "32GB",
+      "battery": "300mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Book 51 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+  },
+  {
+    "id": "p041",
+    "brand": "ApexTech",
+    "name": "ApexTech Buds 315",
+    "price": 65999,
+    "mrp": 79199,
+    "rating": 4.8,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "8GB",
+      "storage": "16GB",
+      "battery": "4000mAh",
+      "connectivity": "Wi‑Fi 6",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Buds 315 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+  },
+  {
+    "id": "p042",
+    "brand": "ApexTech",
+    "name": "ApexTech Watch 154",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 4.6,
+    "img": "https://picsum.photos/seed/accessory/900/600",
+    "collection": "accessories",
+    "specs": {
+      "ram": "8GB",
+      "storage": "32GB",
+      "battery": "1000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Watch 154 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+  },
+  {
+    "id": "p043",
+    "brand": "ApexTech",
+    "name": "ApexTech Charge 93",
+    "price": 10999,
+    "mrp": 13199,
+    "rating": 4.0,
+    "img": "https://picsum.photos/seed/smartwatch/900/600",
+    "collection": "wearables",
+    "specs": {
+      "ram": "6GB",
+      "storage": "32GB",
+      "battery": "300mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Charge 93 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p044",
+    "brand": "ApexTech",
+    "name": "ApexTech Power 203",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.4,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "8GB",
+      "storage": "64GB",
+      "battery": "1000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Power 203 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p045",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 419",
+    "price": 43999,
+    "mrp": 52799,
+    "rating": 4.5,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "6GB",
+      "storage": "-",
+      "battery": "1000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Book 419 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p046",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 160",
+    "price": 65999,
+    "mrp": 79199,
+    "rating": 4.4,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "2GB",
+      "storage": "16GB",
+      "battery": "4000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 160 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p047",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 416",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 4.0,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "4GB",
+      "storage": "16GB",
+      "battery": "4000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 416 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+  },
+  {
+    "id": "p048",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 158",
+    "price": 3299,
+    "mrp": 3959,
+    "rating": 4.8,
+    "img": "https://picsum.photos/seed/laptop/900/600",
+    "collection": "laptops",
+    "specs": {
+      "ram": "-",
+      "storage": "16GB",
+      "battery": "5000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Book 158 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p049",
+    "brand": "ApexTech",
+    "name": "ApexTech Phone 177",
+    "price": 2199,
+    "mrp": 2639,
+    "rating": 3.8,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "8GB",
+      "storage": "32GB",
+      "battery": "300mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Phone 177 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+  },
+  {
+    "id": "p050",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 247",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.3,
+    "img": "https://picsum.photos/seed/speaker/900/600",
+    "collection": "audio",
+    "specs": {
+      "ram": "2GB",
+      "storage": "64GB",
+      "battery": "5000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Book 247 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p051",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 114",
+    "price": 1429,
+    "mrp": 1715,
+    "rating": 4.8,
+    "img": "https://picsum.photos/seed/accessory/900/600",
+    "collection": "accessories",
+    "specs": {
+      "ram": "2GB",
+      "storage": "128GB",
+      "battery": "500mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 114 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p052",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 166",
+    "price": 3299,
+    "mrp": 3959,
+    "rating": 4.5,
+    "img": "https://picsum.photos/seed/tablet/900/600",
+    "collection": "tablets",
+    "specs": {
+      "ram": "8GB",
+      "storage": "16GB",
+      "battery": "5000mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 166 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+  },
+  {
+    "id": "p053",
+    "brand": "ApexTech",
+    "name": "ApexTech Pad 365",
+    "price": 16499,
+    "mrp": 19799,
+    "rating": 4.6,
+    "img": "https://picsum.photos/seed/headphone/900/600",
+    "collection": "audio",
+    "specs": {
+      "ram": "6GB",
+      "storage": "-",
+      "battery": "5000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Pad 365 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+  },
+  {
+    "id": "p054",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 224",
+    "price": 21999,
+    "mrp": 26399,
+    "rating": 4.6,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "8GB",
+      "storage": "128GB",
+      "battery": "300mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Book 224 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p055",
+    "brand": "ApexTech",
+    "name": "ApexTech Book 250",
+    "price": 879,
+    "mrp": 1055,
+    "rating": 4.6,
+    "img": "https://picsum.photos/seed/charger/900/600",
+    "collection": "chargers",
+    "specs": {
+      "ram": "2GB",
+      "storage": "32GB",
+      "battery": "300mAh",
+      "connectivity": "Bluetooth 5.3",
+      "warranty": "6 months"
+    },
+    "desc": "ApexTech ApexTech Book 250 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+  },
+  {
+    "id": "p056",
+    "brand": "ApexTech",
+    "name": "ApexTech Note 175",
+    "price": 43999,
+    "mrp": 52799,
+    "rating": 4.2,
+    "img": "https://picsum.photos/seed/phone/900/600",
+    "collection": "phones",
+    "specs": {
+      "ram": "8GB",
+      "storage": "-",
+      "battery": "4000mAh",
+      "connectivity": "BT 5.2 + Wi‑Fi",
+      "warranty": "1 year"
+    },
+    "desc": "ApexTech ApexTech Note 175 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+  }
+]
