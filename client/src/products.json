@@ -163,102 +163,102 @@
   },
   {
     "id": "p010",
-    "brand": "ApexTech",
-    "name": "ApexTech Charge 216",
-    "price": 7699,
-    "mrp": 9239,
+    "brand": "Portronics ",
+    "name": "Portronics Adapto ",
+    "price": 199,
+    "mrp": 239,
     "rating": 4.3,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/51w9roMijiL._AC_UY327_FMwebp_QL65_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "6GB",
-      "storage": "128GB",
-      "battery": "5000mAh",
-      "connectivity": "Bluetooth 5.3",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Charge 216 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Portronics Adapto 12 2.4A 12W Fast Wall Charger for iPhone 11/Xs/XS Max/XR/X/8/7/6/Plus, iPad Pro/Air 2/Mini 3/Mini 4, Samsung S4/S5, and More"
   },
   {
     "id": "p011",
-    "brand": "ApexTech",
-    "name": "ApexTech Phone 301",
+    "brand": "HONOR",
+    "name": "HONOR pad X8",
     "price": 10999,
-    "mrp": 13199,
+    "mrp": 23199,
     "rating": 4.4,
-    "img": "https://picsum.photos/seed/tablet/900/600",
+    "img": "https://m.media-amazon.com/images/I/31zTQky1oyL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "tablets",
     "specs": {
-      "ram": "6GB",
-      "storage": "-",
-      "battery": "5000mAh",
+      "ram": "4GB",
+      "storage": "256gb",
+      "battery": "8300mAh",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Phone 301 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+    "desc": "HONOR Pad X8a (Smartchoice) Wi-Fi Tablet with Free Flip-Cover 27.94Cm (11 Inch),4GB Ram 128 GB ROM Expandable Up to 1TB FHD Display 90Hz,8300Mah Battery,Quad Speakers,Snapdragon 680,Android 14,Grey"
   },
   {
     "id": "p012",
-    "brand": "ApexTech",
-    "name": "ApexTech Phone 161",
+    "brand": "POCO ",
+    "name": "POCO C71",
     "price": 7699,
     "mrp": 9239,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/610frsvhyBL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "-",
+      "ram": "4",
       "storage": "64GB",
       "battery": "500mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Phone 161 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "POCO C71 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
   },
   {
     "id": "p013",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 198",
+    "brand": "Noise",
+    "name": "Noise Pulse 2 ",
     "price": 1649,
     "mrp": 1979,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/accessory/900/600",
+    "img": "https://m.media-amazon.com/images/I/41u4-v-BdNL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "accessories",
     "specs": {
-      "ram": "6GB",
-      "storage": "64GB",
-      "battery": "500mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Note 198 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Noise Pulse 2 Max 1.85 Display, Bluetooth Calling Smart Watch, 10 Days Battery, 550 NITS Brightness, Smart DND, 100 Sports Modes, Smartwatch for Men and Women (Jet Black)"
   },
   {
     "id": "p014",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 314",
+    "brand": "Portronics ",
+    "name": "Portronics ",
     "price": 1429,
     "mrp": 1715,
     "rating": 4.2,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/41c1XGZVpfL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "6GB",
-      "storage": "16GB",
-      "battery": "4000mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "Wi‑Fi 6",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Book 314 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+    "desc": "Portronics 65W Adapto 65M Triple Port Fast Charging Laptop Adaptor, 2 x Type C PD Port,1 x USB-A Port, GaN Technology, Compatible with Laptops, Smartphones, Tablets, MacBooks, iPads(Yellow)"
   },
   {
     "id": "p015",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 30",
-    "price": 3299,
-    "mrp": 3959,
+    "brand": "Amazon ",
+    "name": "Amazon Basics",
+    "price": 699,
+    "mrp": 999,
     "rating": 3.9,
-    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "img": "https://m.media-amazon.com/images/I/61pxJGx+eJL._SL1500_.jpg",
     "collection": "power",
     "specs": {
       "ram": "8GB",
@@ -267,151 +267,151 @@
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Note 30 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+    "desc": "Amazon Basics – 10000mAh Power Bank | 22.5W Fast Charging | 2 USB-A & 1 Type-C Output | Multi-Layer Protection | Universal Compatibility | Compact Travel-Friendly Design | Black"
   },
   {
     "id": "p016",
-    "brand": "ApexTech",
-    "name": "ApexTech Buds 437",
-    "price": 1429,
-    "mrp": 1715,
+    "brand": "Apple ",
+    "name": "Apple iPad Pro ",
+    "price": 154299,
+    "mrp": 199999,
     "rating": 4.6,
-    "img": "https://picsum.photos/seed/tablet/900/600",
+    "img": "https://m.media-amazon.com/images/I/41Ckh0NwP7L._SX342_SY445_QL70_FMwebp_.jpg",
     "collection": "tablets",
     "specs": {
-      "ram": "6GB",
-      "storage": "32GB",
+      "ram": "16GB",
+      "storage": "1TB",
       "battery": "500mAh",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Buds 437 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+    "desc": "Apple iPad Pro [11″] (M5): Ultra Retina XDR Display, [1TB], 12MP Front Camera / 12MP Back Camera, LiDAR Scanner, Wi-Fi 7 with Apple N1, Face ID, All-Day Battery Life — Space Black"
   },
   {
     "id": "p017",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 435",
-    "price": 16499,
-    "mrp": 19799,
+    "brand": "Fastrack",
+    "name": "Fastrack Astor FS2 ",
+    "price": 3999,
+    "mrp": 5999,
     "rating": 4.3,
-    "img": "https://picsum.photos/seed/accessory/900/600",
+    "img": "https://m.media-amazon.com/images/I/41xWczTI2UL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "accessories",
     "specs": {
       "ram": "-",
-      "storage": "16GB",
-      "battery": "1000mAh",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Note 435 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Fastrack Astor FS2 Pro Smart Watch, 1.96” AMOLED Display, 410 * 502 Pixel Resolution, SingleSync BT Calling, AI Voice Assistant, 100+ Sports Modes & Smartwatch Faces, Upto 5 Day Battery, IP68"
   },
   {
     "id": "p018",
-    "brand": "ApexTech",
-    "name": "ApexTech Pad 115",
-    "price": 65999,
-    "mrp": 79199,
+    "brand": "Tribit",
+    "name": "Tribit",
+    "price": 2848,
+    "mrp": 5999,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/headphone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41mtPtOAkUL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "audio",
     "specs": {
-      "ram": "4GB",
-      "storage": "32GB",
-      "battery": "300mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Pad 115 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Tribit Updated Version XSound Go Wireless Bluetooth 5.3 Speakers with Loud Stereo Sound & Rich Bass 16W,24H Playtime,150 ft Bluetooth Range,Outdoor Lightweight IPX7 Waterproof,Built-in Mic (Black)"
   },
   {
     "id": "p019",
-    "brand": "ApexTech",
-    "name": "ApexTech Charge 287",
-    "price": 32999,
-    "mrp": 39599,
+    "brand": "MI",
+    "name": "MI Xiaomi 22.5W",
+    "price": 699,
+    "mrp": 999,
     "rating": 4.3,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/31746-VnMkL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
       "ram": "-",
       "storage": "-",
-      "battery": "5000mAh",
-      "connectivity": "Wi‑Fi 6",
+      "battery": "",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Charge 287 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+    "desc": "MI Xiaomi 22.5W Fast Charger with USB-C Cable, Quick Charge 3.0 Power Adapter Compatible with Redmi Note Series, Poco, Mi, Any Type C Devices - with Power Delivery (White)"
   },
   {
     "id": "p020",
-    "brand": "ApexTech",
-    "name": "ApexTech Pad 65",
-    "price": 10999,
-    "mrp": 13199,
+    "brand": "Xiaomi ",
+    "name": "Xiaomi Pocket Power Bank pro ",
+    "price": 1599,
+    "mrp": 1999,
     "rating": 4.9,
-    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "img": "https://m.media-amazon.com/images/I/41Vvy5ID+NL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "power",
     "specs": {
-      "ram": "8GB",
-      "storage": "64GB",
-      "battery": "300mAh",
-      "connectivity": "Wi‑Fi 6",
+      "ram": "",
+      "storage": "",
+      "battery": "10000mAh",
+      "connectivity": "",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Pad 65 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+    "desc": "Xiaomi Pocket Power Bank pro 10000mAh 33W Super Fast Charging PD |Smart 12 Layer Protection|Type C Input & Output|Triple Output Ports|Supports Android,Apple, Tablets, Earbuds,Watch(MI Powerbank),Black"
   },
   {
     "id": "p021",
-    "brand": "ApexTech",
-    "name": "ApexTech Power 333",
-    "price": 5499,
-    "mrp": 6599,
+    "brand": "Zebronics",
+    "name": "Zebronics ZEB-COUNTY 3W ",
+    "price": 599,
+    "mrp": 999,
     "rating": 4.8,
-    "img": "https://picsum.photos/seed/speaker/900/600",
+    "img": "https://m.media-amazon.com/images/I/4181R+nktQS._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "audio",
     "specs": {
-      "ram": "8GB",
-      "storage": "-",
-      "battery": "4000mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Power 333 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+    "desc": "Zebronics ZEB-COUNTY 3W Wireless Bluetooth Portable Speaker With Supporting Carry Handle, USB, SD Card, AUX, FM & Call Function. (Black)"
   },
   {
     "id": "p022",
-    "brand": "ApexTech",
-    "name": "ApexTech Phone 77",
-    "price": 2199,
-    "mrp": 2639,
+    "brand": "OnePlus ",
+    "name": "OnePlus Pad Go",
+    "price": 16999,
+    "mrp": 19999,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/tablet/900/600",
+    "img": "https://m.media-amazon.com/images/I/31V3lrjd9YL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "tablets",
     "specs": {
       "ram": "8GB",
       "storage": "128GB",
-      "battery": "500mAh",
+      "battery": "6000mAh",
       "connectivity": "Wi‑Fi 6",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Phone 77 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+    "desc": "OnePlus Pad Go 28.85Cm 2.4K 7:5 Ratio Readfit Eye Care LCD Display, Dolby Atmos Quad Speakers, Wi-Fi Connectivity Tablet, 8GB RAM 128 GB Storage Expandable Up-to 1TB Asin, Green"
   },
   {
     "id": "p023",
-    "brand": "ApexTech",
-    "name": "ApexTech Pad 236",
-    "price": 2749,
-    "mrp": 3299,
+    "brand": "Samsung",
+    "name": "Samsung Galaxy Tab S9",
+    "price": 30249,
+    "mrp": 43299,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/tablet/900/600",
+    "img": "https://m.media-amazon.com/images/I/312LEWNgh9L._SX300_SY300_QL70_FMwebp_.jpg",
     "collection": "tablets",
     "specs": {
-      "ram": "6GB",
-      "storage": "-",
+      "ram": "8GB",
+      "storage": "126GB",
       "battery": "1000mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Pad 236 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Samsung Galaxy Tab S9 FE+ 31.50 cm (12.4 inch) Display, RAM 8 GB, ROM 128 GB Expandable, S Pen in-Box, Wi-Fi, IP68 Tablet, Gray"
   },
   {
     "id": "p024",
@@ -420,277 +420,277 @@
     "price": 2199,
     "mrp": 2639,
     "rating": 4.0,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41RGcFD1KgL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "4GB",
-      "storage": "-",
+      "ram": "8GB",
+      "storage": "126GB",
       "battery": "1000mAh",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Power 301 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+    "desc": "Nothing Phone (3A) Pro 5G (Grey, 8GB RAM, 128GB Storage)"
   },
   {
     "id": "p025",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 329",
+    "brand": "boat",
+    "name": "boAt Energyshroom",
     "price": 1429,
     "mrp": 1715,
     "rating": 4.5,
-    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "img": "https://m.media-amazon.com/images/I/41oTkMLo+UL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "power",
     "specs": {
-      "ram": "4GB",
-      "storage": "32GB",
+      "ram": "",
+      "storage": "",
       "battery": "1000mAh",
-      "connectivity": "Wi‑Fi 6",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 329 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+    "desc": "boAt Energyshroom PB300 Pro 10000mAh | Pocket Size Compact Power Bank, USB Type-C Input (2-Way Port), Pass-Through Charging, Compatible with Tablets, Smartphones, Earbuds, Smartwatch(Emerald Green)"
   },
   {
     "id": "p026",
-    "brand": "ApexTech",
-    "name": "ApexTech Buds 253",
-    "price": 3299,
-    "mrp": 3959,
+    "brand": "boat",
+    "name": "boAt Storm",
+    "price": 1099,
+    "mrp": 2959,
     "rating": 4.8,
-    "img": "https://picsum.photos/seed/accessory/900/600",
+    "img": "https://m.media-amazon.com/images/I/41ynE3lJrJL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "accessories",
     "specs": {
       "ram": "-",
-      "storage": "16GB",
-      "battery": "4000mAh",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Buds 253 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "boAt Storm Call 3 w/TBT Navigation, Daily Activity Tracker, DIY Watch Face Studio,700+ Active Modes"
   },
   {
     "id": "p027",
-    "brand": "ApexTech",
-    "name": "ApexTech Charge 384",
-    "price": 10999,
-    "mrp": 13199,
+    "brand": "HAMMER ",
+    "name": "HAMMER Drop ",
+    "price": 599,
+    "mrp": 999,
     "rating": 3.9,
-    "img": "https://picsum.photos/seed/headphone/900/600",
+    "img": "https://m.media-amazon.com/images/I/31vy9zWvK-L._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "audio",
     "specs": {
-      "ram": "2GB",
-      "storage": "128GB",
-      "battery": "300mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Charge 384 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "HAMMER Drop 5W Bluetooth Wireless Speaker with Twin Pairing, 1200 mAh Battery, 100H Standby Time, TWS Function, TF Card, USB Slot, Auto-Pairing, in-Built Mic, Type-C Charging, 52mm Driver (Green)"
   },
   {
     "id": "p028",
-    "brand": "ApexTech",
-    "name": "ApexTech Phone 364",
-    "price": 1429,
-    "mrp": 1715,
+    "brand": "Samsung",
+    "name": "Samsung",
+    "price": 829,
+    "mrp": 999,
     "rating": 4.4,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/512UVkoMMEL._SL1500_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "4GB",
-      "storage": "16GB",
-      "battery": "1000mAh",
-      "connectivity": "Bluetooth 5.3",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Phone 364 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Samsung Original 25W Type-C Travel Adaptor Without Cable, White"
   },
   {
     "id": "p029",
-    "brand": "ApexTech",
-    "name": "ApexTech Pad 433",
+    "brand": "MI",
+    "name": "mi Smart Watch",
     "price": 1649,
     "mrp": 1979,
     "rating": 4.4,
-    "img": "https://picsum.photos/seed/accessory/900/600",
+    "img": "https://m.media-amazon.com/images/I/51K+Nm5-XxL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "accessories",
     "specs": {
-      "ram": "8GB",
+      "ram": "",
       "storage": "-",
-      "battery": "1000mAh",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Pad 433 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "mi Smart Watch for Kids Boys Men Women Girls ID116 Plus 2025 Waterproof Fitness Band for Android iOS – Sports Tracker, Sleep & Heart Rate Monitor – Black"
   },
   {
     "id": "p030",
-    "brand": "ApexTech",
-    "name": "ApexTech Watch 124",
-    "price": 2749,
-    "mrp": 3299,
+    "brand": "Samsung ",
+    "name": "Samsung Galaxy M07",
+    "price": 6749,
+    "mrp": 9299,
     "rating": 4.4,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41cslOLNecL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "2GB",
-      "storage": "-",
+      "ram": "4GB",
+      "storage": "64GB",
       "battery": "300mAh",
       "connectivity": "Wi‑Fi 6",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Watch 124 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+    "desc": "Samsung Galaxy M07 (Black, 4GB RAM, 64GB Storage) | MediaTek Helio G99 | IP54 Rating"
   },
   {
     "id": "p031",
-    "brand": "ApexTech",
-    "name": "ApexTech Power 273",
+    "brand": "boat",
+    "name": "boAt 67W",
     "price": 21999,
     "mrp": 26399,
     "rating": 4.6,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/41E0F1IhYOL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "2GB",
+      "ram": "",
       "storage": "-",
-      "battery": "500mAh",
-      "connectivity": "Bluetooth 5.3",
+      "battery": "",
+      "connectivity": "",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Power 273 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "boAt 67W Gan Smartphone Charger, Ultra-Fast Triple Port Charging with Auto-Detect, Gan Chip Tech, Compact & Lightweight, Heat & Corrosion Resistant, Smart IC Protection 2 Pin(Ash Grey)"
   },
   {
     "id": "p032",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 88",
-    "price": 3299,
-    "mrp": 3959,
+    "brand": "Redmi",
+    "name": "Redmi 13 5G",
+    "price": 11299,
+    "mrp": 17959,
     "rating": 4.0,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41FAeCqQjmL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "-",
-      "storage": "32GB",
+      "ram": "4GB",
+      "storage": "64GB",
       "battery": "5000mAh",
       "connectivity": "Wi‑Fi 6",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Book 88 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+    "desc": "Redmi 13 5G Prime Edition, Orchid Pink, 8GB+128GB "
   },
   {
     "id": "p033",
-    "brand": "ApexTech",
-    "name": "ApexTech Watch 437",
-    "price": 2199,
-    "mrp": 2639,
+    "brand": "Zebronics",
+    "name": "ZEBRONICS MB10000S6",
+    "price": 699,
+    "mrp": 969,
     "rating": 4.3,
-    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "img": "https://m.media-amazon.com/images/I/41LDxTCkqQL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "power",
     "specs": {
-      "ram": "8GB",
-      "storage": "32GB",
-      "battery": "500mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "10000mAh",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Watch 437 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+    "desc": "ZEBRONICS MB10000S6 Power Bank, 10000 mAh, 12W, 5 x Outputs - Dual USB A"
   },
   {
     "id": "p034",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 284",
-    "price": 16499,
-    "mrp": 19799,
+    "brand": "Lifelong ",
+    "name": "Lifelong Electronics ",
+    "price": 899,
+    "mrp": 1299,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "img": "https://m.media-amazon.com/images/I/41LCNZcV9PL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "power",
     "specs": {
-      "ram": "2GB",
-      "storage": "64GB",
-      "battery": "500mAh",
-      "connectivity": "Bluetooth 5.3",
+      "ram": "",
+      "storage": "",
+      "battery": "10000mAh",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Book 284 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Lifelong Electronics 10000mAh 22.5W Fast Charging Power Bank"
   },
   {
     "id": "p035",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 18",
-    "price": 10999,
-    "mrp": 13199,
+    "brand": "Portronics ",
+    "name": "Portronics Adapto",
+    "price": 299,
+    "mrp": 599,
     "rating": 4.5,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/319cJMFm3uL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "2GB",
-      "storage": "128GB",
-      "battery": "300mAh",
-      "connectivity": "Bluetooth 5.3",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 18 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Portronics Adapto 66 2.4A 12w Dual USB Port 5V/2.4A Wall Charger,Comes with 1M Micro USB Cable, USB Wall Charger Adapter for iPhone 11/Xs/XS Max/XR/X/8/7/6/Plus(White)"
   },
   {
     "id": "p036",
-    "brand": "ApexTech",
-    "name": "ApexTech Watch 125",
-    "price": 65999,
-    "mrp": 79199,
+    "brand": "HP",
+    "name": "HP 255 G10",
+    "price": 35999,
+    "mrp": 50199,
     "rating": 3.9,
-    "img": "https://picsum.photos/seed/laptop/900/600",
+    "img": "https://m.media-amazon.com/images/I/51yW0IFuPuL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "laptops",
     "specs": {
-      "ram": "6GB",
-      "storage": "32GB",
-      "battery": "4000mAh",
+      "ram": "32GB",
+      "storage": "512GB",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Watch 125 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "HP 255 G10 Laptop for Home or Work, 16GB RAM, 512GB SSD, 15.6 Full HD, Ryzen 3 7330U (Beats Intel i5-1135G7), HDMI, USB-C, Windows 11 Pro, Business and Fun Ready"
   },
   {
     "id": "p037",
-    "brand": "ApexTech",
-    "name": "ApexTech Pad 277",
+    "brand": "URBN ",
+    "name": "URBN Power Bank ",
     "price": 7699,
     "mrp": 9239,
     "rating": 4.5,
-    "img": "https://picsum.photos/seed/powerbank/900/600",
+    "img": "https://m.media-amazon.com/images/I/41SlS4qUa-L._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "power",
     "specs": {
-      "ram": "6GB",
-      "storage": "64GB",
-      "battery": "1000mAh",
-      "connectivity": "BT 5.2 + Wi‑Fi",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Pad 277 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+    "desc": "URBN Power Bank 20000mAh Fast Charging | 22.5W Super Fast Power Delivery (PD) Portable Charger | Triple Output | USB Type C Input & Output | Pass Through Charging | (Black)"
   },
   {
     "id": "p038",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 175",
-    "price": 32999,
+    "brand": "Lenovo",
+    "name": "Lenovo V15",
+    "price": 26999,
     "mrp": 39599,
     "rating": 4.5,
-    "img": "https://picsum.photos/seed/laptop/900/600",
+    "img": "https://m.media-amazon.com/images/I/41M3NNQf5TL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "laptops",
     "specs": {
-      "ram": "-",
-      "storage": "32GB",
+      "ram": "8GB",
+      "storage": "512GB",
       "battery": "5000mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 175 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Lenovo V15 G4 AMD Athlon Silver 7120U Laptop 8GB LPDDR5 Ram, 512 GB SSD PCIe, Windows 11 Lifetime"
   },
   {
     "id": "p039",
-    "brand": "ApexTech",
-    "name": "ApexTech Power 198",
-    "price": 2199,
-    "mrp": 2639,
+    "brand": "ZEBRONICS",
+    "name": "ZEBRONICS Astra 35",
+    "price": 799,
+    "mrp": 1239,
     "rating": 4.7,
-    "img": "https://picsum.photos/seed/headphone/900/600",
+    "img": "https://m.media-amazon.com/images/I/319RaAZHSYL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "audio",
     "specs": {
       "ram": "-",
@@ -699,196 +699,196 @@
       "connectivity": "Wi‑Fi 6",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Power 198 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+    "desc": "ZEBRONICS Astra 35, Portable Bluetooth Speaker, 16 Watts, Upto 8h Backup, Dual Drivers + Dual Passive Radiators, Call Function, Bluetooth v5.3 | USB | mSD| AUX, TWS, RGB LED"
   },
   {
     "id": "p040",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 51",
-    "price": 5499,
-    "mrp": 6599,
+    "brand": "OnePlus",
+    "name": "OnePlus Nord CE4",
+    "price": 18499,
+    "mrp": 25599,
     "rating": 4.9,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41bkMtA7usL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "-",
-      "storage": "32GB",
+      "ram": "8GB",
+      "storage": "64GB",
       "battery": "300mAh",
       "connectivity": "Wi‑Fi 6",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Book 51 delivers solid performance with Wi‑Fi 6 and 6 months warranty."
+    "desc": "OnePlus Nord CE4 (Celadon Marble, 8GB RAM, 128GB Storage) | Lifetime Display Warranty | Qualcomm® Snapdragon™ 7 Gen 3 - Best in The Segment | 50 MP Camera with OIS"
   },
   {
     "id": "p041",
-    "brand": "ApexTech",
-    "name": "ApexTech Buds 315",
-    "price": 65999,
-    "mrp": 79199,
+    "brand": "boat",
+    "name": "boAt WCDV 22.5W",
+    "price": 699,
+    "mrp": 999,
     "rating": 4.8,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/21hEQqKJj1L._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "8GB",
-      "storage": "16GB",
-      "battery": "4000mAh",
-      "connectivity": "Wi‑Fi 6",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Buds 315 delivers solid performance with Wi‑Fi 6 and 1 year warranty."
+    "desc": "boAt WCDV 22.5W Dual Port Charger with 22.5W Power Delivery Support & 18W Quick Charge 3.0, Smart IC Protection"
   },
   {
     "id": "p042",
-    "brand": "ApexTech",
-    "name": "ApexTech Watch 154",
+    "brand": "NoiseFit",
+    "name": "NoiseFit Halo",
     "price": 2199,
     "mrp": 2639,
     "rating": 4.6,
-    "img": "https://picsum.photos/seed/accessory/900/600",
+    "img": "https://m.media-amazon.com/images/I/418VOtv59lL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "accessories",
     "specs": {
-      "ram": "8GB",
-      "storage": "32GB",
-      "battery": "1000mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Watch 154 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+    "desc": "NoiseFit Halo 1.43 AMOLED Display, Bluetooth Calling Round Dial Smart Watch, Premium Metallic Build, Always on Display, Smart Gesture Control, 100 Sports Modes (Vintage Brown)"
   },
   {
     "id": "p043",
     "brand": "ApexTech",
     "name": "ApexTech Charge 93",
-    "price": 10999,
-    "mrp": 13199,
+    "price": 599,
+    "mrp": 999,
     "rating": 4.0,
-    "img": "https://picsum.photos/seed/smartwatch/900/600",
+    "img": "https://m.media-amazon.com/images/I/51MfjEL7PcL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "wearables",
     "specs": {
-      "ram": "6GB",
-      "storage": "32GB",
-      "battery": "300mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Charge 93 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Bluetooth Calling Smart Watch, HD Display Orange Strap, DIY Watch Face Studio, Bluetooth Calling, Emergency SOS, QR Tray, Smart Watch for Men & Women"
   },
   {
     "id": "p044",
-    "brand": "ApexTech",
-    "name": "ApexTech Power 203",
+    "brand": "POCO ",
+    "name": "POCO M6",
     "price": 1429,
     "mrp": 1715,
     "rating": 4.4,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/4168ztRPYyL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
       "ram": "8GB",
-      "storage": "64GB",
-      "battery": "1000mAh",
+      "storage": "126GB",
+      "battery": "6000mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Power 203 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "POCO M6 Plus 5G Ice Silver 8GB RAM 128GB ROM"
   },
   {
     "id": "p045",
     "brand": "ApexTech",
-    "name": "ApexTech Book 419",
-    "price": 43999,
-    "mrp": 52799,
+    "name": "ApexTech ",
+    "price": 499,
+    "mrp": 999,
     "rating": 4.5,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/41iFpOfTwGL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "6GB",
+      "ram": "",
       "storage": "-",
-      "battery": "1000mAh",
-      "connectivity": "Bluetooth 5.3",
+      "battery": "",
+      "connectivity": "",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Book 419 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Ambrane 20W Type C Mobile Charger Adapter, Fast Charging for Android, iPhone 16/15/14/13/12/11/X (Pro,/Plus/Max Series), Samsung, Google Pixel & Oppo,Vivo Other Type C Enabled Devices, (M20,Black)"
   },
   {
     "id": "p046",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 160",
-    "price": 65999,
-    "mrp": 79199,
+    "brand": "Redmi",
+    "name": "Redmi A4 5G ",
+    "price": 8599,
+    "mrp": 15199,
     "rating": 4.4,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/4146RWmsLuL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "2GB",
-      "storage": "16GB",
+      "ram": "4GB",
+      "storage": "126GB",
       "battery": "4000mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 160 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Redmi A4 5G (Sparkle Purple, 4GB RAM, 128GB Storage) | Segment Largest 6.88in 120Hz | 50MP Dual Camera | 18W Fast Charging | Charger in The Box"
   },
   {
     "id": "p047",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 416",
-    "price": 2199,
-    "mrp": 2639,
+    "brand": "Novobit",
+    "name": "Novobit",
+    "price": 599,
+    "mrp": 939,
     "rating": 4.0,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/41ywho+kFHL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "4GB",
-      "storage": "16GB",
-      "battery": "4000mAh",
-      "connectivity": "BT 5.2 + Wi‑Fi",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 416 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+    "desc": "Novobit 65W SUPEVOOC Fast Charger with Type-C Cable | 65W Charger for OnePlus, Realme, Oppo, Redmi, Xiaomi, Poco, iQOO, Samsung, Motorola & More | Supports Dart, Dash, Warp, Vooc, SuperVooc, QC 3.0"
   },
   {
     "id": "p048",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 158",
-    "price": 3299,
-    "mrp": 3959,
+    "brand": "acer",
+    "name": "acer Aspire Lite",
+    "price": 29299,
+    "mrp": 39959,
     "rating": 4.8,
-    "img": "https://picsum.photos/seed/laptop/900/600",
+    "img": "https://m.media-amazon.com/images/I/41dKxEFUTrL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "laptops",
     "specs": {
-      "ram": "-",
-      "storage": "16GB",
+      "ram": "8GB",
+      "storage": "512GB",
       "battery": "5000mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Book 158 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "acer Aspire Lite, AMD Ryzen 3 5300U Processor, 16 GB RAM, 512GB SSD, Full HD, 15.6 /39.62cm, Windows 11 Home, Steel Gray, 1.59KG, AL15-41, Metal Body, Premium Thin and Light Laptop"
   },
   {
     "id": "p049",
-    "brand": "ApexTech",
-    "name": "ApexTech Phone 177",
-    "price": 2199,
-    "mrp": 2639,
+    "brand": "Portronics ",
+    "name": "Portronics 7",
+    "price": 699,
+    "mrp": 989,
     "rating": 3.8,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/313zMRrfuYL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "8GB",
-      "storage": "32GB",
-      "battery": "300mAh",
-      "connectivity": "BT 5.2 + Wi‑Fi",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Phone 177 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+    "desc": "Portronics Adapto 70 33W Fast Charger Adapter with Dual Output (USB + Type C) Supports PPS Charging Via Type C Port, 27W Dash, Warp 27W, Dart, Super Dart 27W"
   },
   {
     "id": "p050",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 247",
-    "price": 1429,
-    "mrp": 1715,
+    "brand": "JBL ",
+    "name": "JBL Grip",
+    "price": 21429,
+    "mrp": 27215,
     "rating": 4.3,
-    "img": "https://picsum.photos/seed/speaker/900/600",
+    "img": "https://m.media-amazon.com/images/I/41A2FMO0C2L._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "audio",
     "specs": {
       "ram": "2GB",
@@ -897,106 +897,106 @@
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Book 247 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "JBL Grip - Compact Bluetooth Speaker with Bold JBL Pro Sound and Ambient Light, up to 14 Hours of Playtime, Water, Dust and Drop-Proof (IP68), & Multi-Speaker Connection with Auracast™ (Black)"
   },
   {
     "id": "p051",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 114",
+    "brand": "Fastrack",
+    "name": "Fastrack Volt S1",
     "price": 1429,
     "mrp": 1715,
     "rating": 4.8,
-    "img": "https://picsum.photos/seed/accessory/900/600",
+    "img": "https://m.media-amazon.com/images/I/41ME37uNtkL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "accessories",
     "specs": {
-      "ram": "2GB",
-      "storage": "128GB",
-      "battery": "500mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 114 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Fastrack Volt S1 Smart Watch for Man and Women Latest with 1.83 Display, Silicone Strap, BT Calling, 100+ Sports Modes, Heart Rate, SpO2, IP68, Ideal Smartwatch for Boys and Girls (Beige)"
   },
   {
     "id": "p052",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 166",
-    "price": 3299,
-    "mrp": 3959,
+    "brand": "Lenovo ",
+    "name": "Lenovo Tab",
+    "price": 13299,
+    "mrp": 17959,
     "rating": 4.5,
-    "img": "https://picsum.photos/seed/tablet/900/600",
+    "img": "https://m.media-amazon.com/images/I/41eFr++PpEL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "tablets",
     "specs": {
       "ram": "8GB",
-      "storage": "16GB",
+      "storage": "64GB",
       "battery": "5000mAh",
       "connectivity": "Bluetooth 5.3",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 166 delivers solid performance with Bluetooth 5.3 and 1 year warranty."
+    "desc": "Lenovo Tab | 10.1 Display | Wi-Fi Only | 4 GB RAM + 64 GB ROM (Expandable up to 1 TB) | Metal Body | Dual Speakers with Dolby Atmos | Android 14 | Color: Luna Grey"
   },
   {
     "id": "p053",
-    "brand": "ApexTech",
-    "name": "ApexTech Pad 365",
-    "price": 16499,
-    "mrp": 19799,
+    "brand": "pTron ",
+    "name": "pTron ",
+    "price": 699,
+    "mrp": 999,
     "rating": 4.6,
-    "img": "https://picsum.photos/seed/headphone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41o5Ypw49vL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "audio",
     "specs": {
-      "ram": "6GB",
-      "storage": "-",
-      "battery": "5000mAh",
+      "ram": "",
+      "storage": "",
+      "battery": "",
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Pad 365 delivers solid performance with BT 5.2 + Wi‑Fi and 6 months warranty."
+    "desc": "pTron Newly Launched Fusion Tunes 10W Mini Bluetooth Speaker with Wireless Karaoke Mic, 8Hrs Playtime, Vivid RGB Lights, Voice Effects, Multi-Play Modes BT5.1/TF Card & Type-C Charging Port (Black)"
   },
   {
     "id": "p054",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 224",
-    "price": 21999,
-    "mrp": 26399,
+    "brand": "iPhone ",
+    "name": "iPhone 16e ",
+    "price": 51999,
+    "mrp": 66399,
     "rating": 4.6,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/31YrZL046rL._SX342_SY445_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
-      "ram": "8GB",
+      "ram": "",
       "storage": "128GB",
-      "battery": "300mAh",
+      "battery": "",
       "connectivity": "Bluetooth 5.3",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Book 224 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "iPhone 16e 128 GB: Built for Apple Intelligence, A18 Chip, Supersized Battery Life, 48MP Fusion. Camera, 15.40 cm (6.1″) Super Retina XDR Display; Black"
   },
   {
     "id": "p055",
-    "brand": "ApexTech",
-    "name": "ApexTech Book 250",
-    "price": 879,
-    "mrp": 1055,
+    "brand": "Apple",
+    "name": "Apple 20W",
+    "price": 1879,
+    "mrp": 1955,
     "rating": 4.6,
-    "img": "https://picsum.photos/seed/charger/900/600",
+    "img": "https://m.media-amazon.com/images/I/21rFLTV3tML._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "chargers",
     "specs": {
-      "ram": "2GB",
-      "storage": "32GB",
-      "battery": "300mAh",
-      "connectivity": "Bluetooth 5.3",
+      "ram": "",
+      "storage": "",
+      "battery": "",
+      "connectivity": "",
       "warranty": "6 months"
     },
-    "desc": "ApexTech ApexTech Book 250 delivers solid performance with Bluetooth 5.3 and 6 months warranty."
+    "desc": "Apple 20W USB-C Power Adapter (for iPhone, iPad & AirPods)"
   },
   {
     "id": "p056",
-    "brand": "ApexTech",
-    "name": "ApexTech Note 175",
-    "price": 43999,
-    "mrp": 52799,
+    "brand": "iQOO ",
+    "name": "iQOO Z10x",
+    "price": 13999,
+    "mrp": 19799,
     "rating": 4.2,
-    "img": "https://picsum.photos/seed/phone/900/600",
+    "img": "https://m.media-amazon.com/images/I/41VYRSjxUoL._SY300_SX300_QL70_FMwebp_.jpg",
     "collection": "phones",
     "specs": {
       "ram": "8GB",
@@ -1005,6 +1005,6 @@
       "connectivity": "BT 5.2 + Wi‑Fi",
       "warranty": "1 year"
     },
-    "desc": "ApexTech ApexTech Note 175 delivers solid performance with BT 5.2 + Wi‑Fi and 1 year warranty."
+    "desc": "iQOO Z10x 5G (Titanium, 8GB RAM, 128GB Storage) | 6500 mAh Large Capacity Battery | Dimensity 7300 Processor | Military-Grade Durability"
   }
 ]
