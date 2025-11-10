@@ -15,8 +15,55 @@ import { api } from './lib/api.js'
 import data from './products.json'
 
 /* =========================================================
+   Lightweight SEO helper (no deps)
+========================================================= */
+function SEO({ title, description, keywords = [], canonical, jsonLd }) {
+  React.useEffect(() => {
+    if (title) document.title = title;
+
+    const setMeta = (name, content) => {
+      if (!content) return;
+      let el = document.querySelector(`meta[name="${name}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('name', name);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    setMeta('description', description);
+    if (Array.isArray(keywords) ? keywords.length : keywords)
+      setMeta('keywords', Array.isArray(keywords) ? keywords.join(', ') : keywords);
+    setMeta('robots', 'index, follow');
+
+    if (canonical) {
+      let link = document.querySelector('link[rel="canonical"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        document.head.appendChild(link);
+      }
+      link.setAttribute('href', canonical);
+    }
+
+    // JSON-LD
+    let jsonTag = document.getElementById('__jsonld');
+    if (jsonTag) jsonTag.remove();
+    if (jsonLd) {
+      jsonTag = document.createElement('script');
+      jsonTag.type = 'application/ld+json';
+      jsonTag.id = '__jsonld';
+      jsonTag.text = JSON.stringify(jsonLd);
+      document.head.appendChild(jsonTag);
+    }
+  }, [title, description, JSON.stringify(keywords), canonical, JSON.stringify(jsonLd)]);
+
+  return null;
+}
+
+/* =========================================================
    Firebase (Web) — optional (kept for login/profile)
-   If you don't want auth at all, you can remove this block.
 ========================================================= */
 import { initializeApp } from 'firebase/app'
 import {
@@ -72,7 +119,7 @@ function setDefaultAddress(id) {
 }
 
 /* =========================================================
-   Guest ID (for orders without Firebase auth)
+   Guest ID (for guest checkout & orders)
 ========================================================= */
 function getGuestId() {
   let id = localStorage.getItem('dg_guest')
@@ -130,8 +177,6 @@ function useCart() {
    Firebase Auth Provider
 ----------------------- */
 function AuthProvider({ children }) {
-  // user: Firebase user object (or null)
-  // token: Firebase ID token (for APIs if you keep Firebase-protected endpoints)
   const [user, setUser] = React.useState(null)
   const [token, setToken] = React.useState('')
 
@@ -309,39 +354,59 @@ function ProductCard({ p }) {
   )
 }
 
+/* =========================================================
+   Pages with SEO
+========================================================= */
 function Home() {
-  const top = data.slice(0, 6)
   return (
-    <main className="container py-8">
-      <section className="grid md:grid-cols-2 gap-8 items-center">
-        <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-            Discover your next favorite gadget with <span className="text-brand">DigiGenius</span>
-          </h1>
-        </div>
-      </section>
-      <hr className="div" />
-      <section>
-        <h2 className="text-2xl font-bold mb-3">New Arrivals</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.slice(-6).map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-      </section>
-      <hr className="div" />
-      <section>
-        <h2 className="text-2xl font-bold mb-3">Bestsellers</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...data].sort((a, b) => b.rating - a.rating).slice(0, 6).map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-      </section>
-      <hr className="div" />
-      <section>
-        <h2 className="text-2xl font-bold mb-3">All Products</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {top.map((p) => <ProductCard key={p.id} p={p} />)}
-        </div>
-      </section>
-    </main>
+    <>
+      <SEO
+        title="DigitGenius — Buy Electronics & Gadgets Online in India"
+        description="Shop mobiles, earbuds, power banks, smartwatches and more at DigitGenius. Fast checkout, secure payments and speedy delivery across India."
+        keywords={[
+          'electronics online','buy gadgets india','smartphones',
+          'earbuds','power bank','smartwatch','best prices','DigitGenius'
+        ]}
+        canonical={location.origin + '/'}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'DigitGenius',
+          url: location.origin,
+          logo: location.origin + '/logo192.png'
+        }}
+      />
+      <main className="container py-8">
+        <section className="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
+              Discover your next favorite gadget with <span className="text-brand">DigiGenius</span>
+            </h1>
+          </div>
+        </section>
+        <hr className="div" />
+        <section>
+          <h2 className="text-2xl font-bold mb-3">New Arrivals</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.slice(-6).map((p) => <ProductCard key={p.id} p={p} />)}
+          </div>
+        </section>
+        <hr className="div" />
+        <section>
+          <h2 className="text-2xl font-bold mb-3">Bestsellers</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...data].sort((a, b) => b.rating - a.rating).slice(0, 6).map((p) => <ProductCard key={p.id} p={p} />)}
+          </div>
+        </section>
+        <hr className="div" />
+        <section>
+          <h2 className="text-2xl font-bold mb-3">All Products</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data.slice(0, 6).map((p) => <ProductCard key={p.id} p={p} />)}
+          </div>
+        </section>
+      </main>
+    </>
   )
 }
 
@@ -368,91 +433,131 @@ function Products() {
         ? b.id.localeCompare(a.id)
         : 0
     )
+
   function update(k, v) {
     const p = new URLSearchParams(params)
     if (v === '' || v === 'all') p.delete(k)
     else p.set(k, v)
     setParams(p, { replace: true })
   }
+
+  const pageTitle = (q ? `Search "${q}" — ` : '') + 'Products | DigitGenius'
+  const desc = q
+    ? `Results for "${q}" at DigitGenius. Compare prices, ratings and specs.`
+    : 'Browse all electronics at DigitGenius. Filter by brand, rating and price.'
+
   return (
-    <main className="container py-8 grid md:grid-cols-4 gap-6">
-      <aside className="card p-4 md:sticky md:top-20 h-fit">
-        <div className="font-semibold mb-2">Filters</div>
-        <label className="block mb-2">
-          Search
-          <input defaultValue={params.get('q') || ''} onChange={(e) => update('q', e.target.value)} className="w-full" />
-        </label>
-        <label className="block mb-2">
-          Brand
-          <select defaultValue={brand} onChange={(e) => update('brand', e.target.value)} className="w-full">
-            <option value="all">All</option>
-            {brands.map((b) => <option key={b} value={b}>{b}</option>)}
-          </select>
-        </label>
-        <div className="grid grid-cols-2 gap-2 mb-2">
-          <label>
-            Min
-            <input type="number" defaultValue={params.get('min') || ''} onChange={(e) => update('min', e.target.value)} className="w-full" />
+    <>
+      <SEO
+        title={pageTitle}
+        description={desc}
+        keywords={['electronics','mobiles','earbuds','smartwatch','online store','DigitGenius']}
+        canonical={location.origin + '/products' + (q ? `?q=${encodeURIComponent(q)}` : '')}
+      />
+      <main className="container py-8 grid md:grid-cols-4 gap-6">
+        <aside className="card p-4 md:sticky md:top-20 h-fit">
+          <div className="font-semibold mb-2">Filters</div>
+          <label className="block mb-2">
+            Search
+            <input defaultValue={params.get('q') || ''} onChange={(e) => update('q', e.target.value)} className="w-full" />
           </label>
-          <label>
-            Max
-            <input type="number" defaultValue={params.get('max') || ''} onChange={(e) => update('max', e.target.value)} className="w-full" />
+          <label className="block mb-2">
+            Brand
+            <select defaultValue={brand} onChange={(e) => update('brand', e.target.value)} className="w-full">
+              <option value="all">All</option>
+              {brands.map((b) => <option key={b} value={b}>{b}</option>)}
+            </select>
           </label>
-        </div>
-        <label className="block mb-2">
-          Rating ≥
-          <input type="number" step="0.1" defaultValue={params.get('rating') || ''} onChange={(e) => update('rating', e.target.value)} className="w-full" />
-        </label>
-        <label className="block">
-          Sort
-          <select defaultValue={sort} onChange={(e) => update('sort', e.target.value)} className="w-full">
-            <option value="relevance">Relevance</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="newest">Newest</option>
-          </select>
-        </label>
-      </aside>
-      <section className="md:col-span-3">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.map((p) => <ProductCard key={p.id} p={p} />)}</div>
-      </section>
-    </main>
+          <div className="grid grid-cols-2 gap-2 mb-2">
+            <label>
+              Min
+              <input type="number" defaultValue={params.get('min') || ''} onChange={(e) => update('min', e.target.value)} className="w-full" />
+            </label>
+            <label>
+              Max
+              <input type="number" defaultValue={params.get('max') || ''} onChange={(e) => update('max', e.target.value)} className="w-full" />
+            </label>
+          </div>
+          <label className="block mb-2">
+            Rating ≥
+            <input type="number" step="0.1" defaultValue={params.get('rating') || ''} onChange={(e) => update('rating', e.target.value)} className="w-full" />
+          </label>
+          <label className="block">
+            Sort
+            <select defaultValue={sort} onChange={(e) => update('sort', e.target.value)} className="w-full">
+              <option value="relevance">Relevance</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="newest">Newest</option>
+            </select>
+          </label>
+        </aside>
+        <section className="md:col-span-3">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.map((p) => <ProductCard key={p.id} p={p} />)}</div>
+        </section>
+      </main>
+    </>
   )
 }
 
 function Collections() {
   const cols = [...new Set(data.map((p) => p.collection))]
   return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3">Collections</h1>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {cols.map((c) => (
-          <Link key={c} to={`/collections/${c}`} className="card p-6">
-            <div className="text-lg font-semibold capitalize">{c}</div>
-            <div className="text-sm text-slate-600">{data.filter((p) => p.collection === c).length} items</div>
-          </Link>
-        ))}
-      </div>
-    </main>
+    <>
+      <SEO
+        title="Collections | DigitGenius"
+        description="Explore curated collections of electronics at DigitGenius."
+        keywords={['collections','electronics collections','DigitGenius']}
+        canonical={location.origin + '/collections'}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3">Collections</h1>
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {cols.map((c) => (
+            <Link key={c} to={`/collections/${c}`} className="card p-6">
+              <div className="text-lg font-semibold capitalize">{c}</div>
+              <div className="text-sm text-slate-600">{data.filter((p) => p.collection === c).length} items</div>
+            </Link>
+          ))}
+        </div>
+      </main>
+    </>
   )
 }
+
 function CollectionView() {
   const { name } = useParams()
   const list = data.filter((p) => p.collection === name)
   return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3 capitalize">{name}</h1>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.map((p) => <ProductCard key={p.id} p={p} />)}</div>
-    </main>
+    <>
+      <SEO
+        title={`${name} Collection | DigitGenius`}
+        description={`Explore ${name} collection: curated electronics with great prices at DigitGenius.`}
+        keywords={[name, 'collection', 'electronics', 'DigitGenius']}
+        canonical={location.origin + '/collections/' + name}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3 capitalize">{name}</h1>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{list.map((p) => <ProductCard key={p.id} p={p} />)}</div>
+      </main>
+    </>
   )
 }
+
 function Wishlist() {
   const { items } = useWish()
   return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3">Wishlist</h1>
-      {items.length === 0 ? 'No items' : <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{items.map((p) => <ProductCard key={p.id} p={p} />)}</div>}
-    </main>
+    <>
+      <SEO
+        title="Wishlist | DigitGenius"
+        description="Your saved products at DigitGenius."
+        canonical={location.origin + '/wishlist'}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3">Wishlist</h1>
+        {items.length === 0 ? 'No items' : <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{items.map((p) => <ProductCard key={p.id} p={p} />)}</div>}
+      </main>
+    </>
   )
 }
 
@@ -461,37 +566,67 @@ function Product() {
   const p = data.find((x) => x.id === id)
   const { add } = useCart()
   if (!p) return <main className="container py-8">Not found</main>
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name,
+    brand: p.brand,
+    image: p.img,
+    description: p.desc || `${p.brand} ${p.name} at DigitGenius`,
+    sku: p.id,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      price: p.price,
+      availability: 'https://schema.org/InStock',
+      url: location.origin + '/products/' + p.id,
+    },
+    aggregateRating: p.rating
+      ? { '@type': 'AggregateRating', ratingValue: p.rating, reviewCount: Math.max(23, Math.floor(p.rating * 40)) }
+      : undefined
+  }
+
   return (
-    <main className="container py-8 grid md:grid-cols-2 gap-6">
-      <img src={p.img} className="rounded-xl" alt={p.name} />
-      <div>
-        <nav className="text-sm text-slate-500 mb-2">
-          <Link to="/">Home</Link> / <Link to="/products">Products</Link> / <span>{p.brand}</span>
-        </nav>
-        <h1 className="text-3xl font-bold">{p.name}</h1>
-        <div className="text-slate-600">Seller: DigitGenius Retail • ⭐ {p.rating}</div>
-        <div className="mt-2 flex items-baseline gap-2">
-          <div className="text-2xl font-extrabold">₹{p.price}</div>
-          <div className="text-sm line-through text-slate-500">₹{p.mrp}</div>
+    <>
+      <SEO
+        title={`${p.name} Price in India | Buy ${p.name} Online — DigitGenius`}
+        description={`${p.name} by ${p.brand}. Best price ₹${p.price}. Specs: RAM ${p.specs?.ram || '-'}, Storage ${p.specs?.storage || '-'}, Battery ${p.specs?.battery || '-'}.`}
+        keywords={[p.name, p.brand, 'price in India', 'buy online', 'DigitGenius']}
+        canonical={location.origin + '/products/' + p.id}
+        jsonLd={ld}
+      />
+      <main className="container py-8 grid md:grid-cols-2 gap-6">
+        <img src={p.img} className="rounded-xl" alt={p.name} />
+        <div>
+          <nav className="text-sm text-slate-500 mb-2">
+            <Link to="/">Home</Link> / <Link to="/products">Products</Link> / <span>{p.brand}</span>
+          </nav>
+          <h1 className="text-3xl font-bold">{p.name}</h1>
+          <div className="text-slate-600">Seller: DigitGenius Retail • ⭐ {p.rating}</div>
+          <div className="mt-2 flex items-baseline gap-2">
+            <div className="text-2xl font-extrabold">₹{p.price}</div>
+            <div className="text-sm line-through text-slate-500">₹{p.mrp}</div>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <button className="btn" onClick={() => add(p)}>Add to Cart</button>
+            <Link to="/cart" className="btn-outline">Go to Cart</Link>
+          </div>
+          <hr className="div" />
+          <h3 className="font-semibold mb-2">Key Specs</h3>
+          <ul className="grid grid-cols-2 gap-1 text-sm text-slate-700">
+            <li>RAM: {p.specs?.ram || '-'}</li>
+            <li>Storage: {p.specs?.storage || '-'}</li>
+            <li>Battery: {p.specs?.battery || '-'}</li>
+            <li>Connectivity: {p.specs?.connectivity || '-'}</li>
+            <li>Warranty: {p.specs?.warranty || '1 year'}</li>
+          </ul>
+          <hr className="div" />
+          <h3 className="font-semibold mb-2">About this item</h3>
+          <p className="text-slate-700 text-sm leading-6">{p.desc || 'High-quality electronics with reliable performance and warranty.'}</p>
         </div>
-        <div className="mt-4 flex gap-2">
-          <button className="btn" onClick={() => add(p)}>Add to Cart</button>
-          <Link to="/cart" className="btn-outline">Go to Cart</Link>
-        </div>
-        <hr className="div" />
-        <h3 className="font-semibold mb-2">Key Specs</h3>
-        <ul className="grid grid-cols-2 gap-1 text-sm text-slate-700">
-          <li>RAM: {p.specs?.ram || '-'}</li>
-          <li>Storage: {p.specs?.storage || '-'}</li>
-          <li>Battery: {p.specs?.battery || '-'}</li>
-          <li>Connectivity: {p.specs?.connectivity || '-'}</li>
-          <li>Warranty: {p.specs?.warranty || '1 year'}</li>
-        </ul>
-        <hr className="div" />
-        <h3 className="font-semibold mb-2">About this item</h3>
-        <p className="text-slate-700 text-sm leading-6">{p.desc || 'High-quality electronics with reliable performance and warranty.'}</p>
-      </div>
-    </main>
+      </main>
+    </>
   )
 }
 
@@ -499,36 +634,43 @@ function Cart() {
   const { cart, inc, dec, remove, total } = useCart()
   const nav = useNavigate()
   return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3">Cart</h1>
-      {cart.length === 0 ? (
-        'Empty cart'
-      ) : (
-        <div className="grid lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 space-y-3">
-            {cart.map((i) => (
-              <div key={i.id} className="card p-4 flex items-center gap-3">
-                <img src={i.img} className="w-24 h-16 rounded" alt={i.name} />
-                <div className="flex-1">
-                  <div className="font-medium">{i.name}</div>
-                  <div className="text-sm">₹{i.price}</div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <button onClick={() => dec(i.id)} className="px-2 border rounded">-</button>
-                    <span>{i.qty}</span>
-                    <button onClick={() => inc(i.id)} className="px-2 border rounded">+</button>
+    <>
+      <SEO
+        title="Cart | DigitGenius"
+        description="Review items in your cart and proceed to checkout."
+        canonical={location.origin + '/cart'}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3">Cart</h1>
+        {cart.length === 0 ? (
+          'Empty cart'
+        ) : (
+          <div className="grid lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 space-y-3">
+              {cart.map((i) => (
+                <div key={i.id} className="card p-4 flex items-center gap-3">
+                  <img src={i.img} className="w-24 h-16 rounded" alt={i.name} />
+                  <div className="flex-1">
+                    <div className="font-medium">{i.name}</div>
+                    <div className="text-sm">₹{i.price}</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <button onClick={() => dec(i.id)} className="px-2 border rounded">-</button>
+                      <span>{i.qty}</span>
+                      <button onClick={() => inc(i.id)} className="px-2 border rounded">+</button>
+                    </div>
                   </div>
+                  <button onClick={() => remove(i.id)} className="btn-outline">Remove</button>
                 </div>
-                <button onClick={() => remove(i.id)} className="btn-outline">Remove</button>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="card p-4 h-fit">
+              <div className="font-semibold">Total ₹{total}</div>
+              <button onClick={() => nav('/checkout')} className="btn mt-2 w-full">Checkout</button>
+            </div>
           </div>
-          <div className="card p-4 h-fit">
-            <div className="font-semibold">Total ₹{total}</div>
-            <button onClick={() => nav('/checkout')} className="btn mt-2 w-full">Checkout</button>
-          </div>
-        </div>
-      )}
-    </main>
+        )}
+      </main>
+    </>
   )
 }
 
@@ -571,7 +713,6 @@ function Checkout() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // token header is optional now; guestId is what backend uses
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
@@ -579,11 +720,10 @@ function Checkout() {
           address,
           paymentMethod: payment,
           upiReference: upiRef || null,
-          guestId: getGuestId(), // <<< important
+          guestId: getGuestId(),
         }),
       })
 
-      // Safer response handling
       const text = await r.text()
       let d = null
       try { d = text ? JSON.parse(text) : null } catch {}
@@ -599,88 +739,95 @@ function Checkout() {
   if (cart.length === 0) return <main className="container py-8">Cart empty</main>
 
   return (
-    <main className="container py-8 grid md:grid-cols-3 gap-4">
-      <form onSubmit={submit} className="md:col-span-2 space-y-4">
-        {/* Address card */}
-        <div className="card p-4 space-y-3">
-          <div className="font-semibold">Select delivery address</div>
+    <>
+      <SEO
+        title="Checkout | DigitGenius"
+        description="Secure checkout — pay online via UPI or Cash on Delivery."
+        canonical={location.origin + '/checkout'}
+      />
+      <main className="container py-8 grid md:grid-cols-3 gap-4">
+        <form onSubmit={submit} className="md:col-span-2 space-y-4">
+          {/* Address card */}
+          <div className="card p-4 space-y-3">
+            <div className="font-semibold">Select delivery address</div>
 
-          {addresses.length > 0 ? (
-            <div className="space-y-2">
-              {addresses.map((a) => (
-                <label key={a.id} className="flex items-start gap-2 border rounded-xl p-3">
-                  <input type="radio" name="addr" checked={selected === a.id} onChange={() => setSelected(a.id)} />
-                  <div>
-                    <div className="font-medium">
-                      {a.label} {a.default && <span className="badge ml-2">Default</span>}
+            {addresses.length > 0 ? (
+              <div className="space-y-2">
+                {addresses.map((a) => (
+                  <label key={a.id} className="flex items-start gap-2 border rounded-xl p-3">
+                    <input type="radio" name="addr" checked={selected === a.id} onChange={() => setSelected(a.id)} />
+                    <div>
+                      <div className="font-medium">
+                        {a.label} {a.default && <span className="badge ml-2">Default</span>}
+                      </div>
+                      <div className="text-sm text-slate-600">{a.name}, {a.phone}</div>
+                      <div className="text-sm text-slate-600">{a.line1}, {a.city} - {a.pin}</div>
                     </div>
-                    <div className="text-sm text-slate-600">{a.name}, {a.phone}</div>
-                    <div className="text-sm text-slate-600">{a.line1}, {a.city} - {a.pin}</div>
-                  </div>
-                </label>
-              ))}
-            </div>
-          ) : (
-            <div className="text-sm text-slate-600">No saved address yet. Add one below.</div>
-          )}
-
-          <button type="button" onClick={() => setAdding((x) => !x)} className="btn-outline">
-            {adding ? 'Cancel' : 'Add new address'}
-          </button>
-
-          {adding && (
-            <div className="grid sm:grid-cols-2 gap-2">
-              <input name="name" placeholder="Name" required />
-              <input name="phone" placeholder="Phone" required />
-              <input name="line1" placeholder="House/Street" className="sm:col-span-2" required />
-              <input name="city" placeholder="City" required />
-              <input name="pin" placeholder="PIN" required />
-            </div>
-          )}
-        </div>
-
-        {/* Payment method */}
-        <div className="card p-4 space-y-3">
-          <div className="font-semibold">Payment method</div>
-
-          <label className="flex items-center gap-2">
-            <input type="radio" name="pay" value="cod" checked={payment === 'cod'} onChange={() => setPayment('cod')} />
-            <span>Cash on Delivery (COD)</span>
-          </label>
-
-          <label className="flex items-center gap-2">
-            <input type="radio" name="pay" value="online" checked={payment === 'online'} onChange={() => setPayment('online')} />
-            <span>Online (UPI)</span>
-          </label>
-
-          {payment === 'online' && (
-            <div className="border rounded-xl p-3">
-              <div className="text-sm text-slate-600 mb-2">Scan & pay using any UPI app</div>
-              <img src="/QR.jpeg" alt="UPI QR" className="w-full max-w-sm rounded-lg border" />
-              <div className="mt-3 flex flex-col gap-2">
-                <input value={upiRef} onChange={(e) => setUpiRef(e.target.value)} placeholder="UPI reference / transaction ID (optional)" />
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" checked={paidConfirm} onChange={(e) => setPaidConfirm(e.target.checked)} />
-                  <span>I have completed the online payment</span>
-                </label>
+                  </label>
+                ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="text-sm text-slate-600">No saved address yet. Add one below.</div>
+            )}
 
-          <div className="pt-1">
-            <button className="btn">Place Order</button>
+            <button type="button" onClick={() => setAdding((x) => !x)} className="btn-outline">
+              {adding ? 'Cancel' : 'Add new address'}
+            </button>
+
+            {adding && (
+              <div className="grid sm:grid-cols-2 gap-2">
+                <input name="name" placeholder="Name" required />
+                <input name="phone" placeholder="Phone" required />
+                <input name="line1" placeholder="House/Street" className="sm:col-span-2" required />
+                <input name="city" placeholder="City" required />
+                <input name="pin" placeholder="PIN" required />
+              </div>
+            )}
+          </div>
+
+          {/* Payment method */}
+          <div className="card p-4 space-y-3">
+            <div className="font-semibold">Payment method</div>
+
+            <label className="flex items-center gap-2">
+              <input type="radio" name="pay" value="cod" checked={payment === 'cod'} onChange={() => setPayment('cod')} />
+              <span>Cash on Delivery (COD)</span>
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input type="radio" name="pay" value="online" checked={payment === 'online'} onChange={() => setPayment('online')} />
+              <span>Online (UPI)</span>
+            </label>
+
+            {payment === 'online' && (
+              <div className="border rounded-xl p-3">
+                <div className="text-sm text-slate-600 mb-2">Scan & pay using any UPI app</div>
+                <img src="/QR.jpeg" alt="UPI QR" className="w-full max-w-sm rounded-lg border" />
+                <div className="mt-3 flex flex-col gap-2">
+                  <input value={upiRef} onChange={(e) => setUpiRef(e.target.value)} placeholder="UPI reference / transaction ID (optional)" />
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" checked={paidConfirm} onChange={(e) => setPaidConfirm(e.target.checked)} />
+                    <span>I have completed the online payment</span>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            <div className="pt-1">
+              <button className="btn">Place Order</button>
+            </div>
+          </div>
+        </form>
+
+        {/* Summary */}
+        <div className="card h-fit p-4">
+          <div className="font-semibold">Total ₹{total}</div>
+          <div className="text-sm text-slate-600 mt-1">
+            {payment === 'cod' ? 'Pay on delivery' : 'Pay now via UPI'}
           </div>
         </div>
-      </form>
-
-      {/* Summary */}
-      <div className="card h-fit p-4">
-        <div className="font-semibold">Total ₹{total}</div>
-        <div className="text-sm text-slate-600 mt-1">
-          {payment === 'cod' ? 'Pay on delivery' : 'Pay now via UPI'}
-        </div>
-      </div>
-    </main>
+      </main>
+    </>
   )
 }
 
@@ -689,7 +836,6 @@ function Orders() {
   const [orders, setOrders] = React.useState([])
   React.useEffect(() => {
     ;(async () => {
-      // Use Guest-Id header (works for guests and logged-in users)
       const r = await fetch(api('/orders/my'), {
         headers: {
           'Guest-Id': getGuestId(),
@@ -703,28 +849,35 @@ function Orders() {
     })()
   }, [token])
   return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3">Orders</h1>
-      {orders.length === 0
-        ? 'No orders'
-        : orders.map((o) => (
-            <div key={o.id} className="card p-4 mb-3">
-              <div className="flex justify-between">
-                <div className="font-semibold">Order #{o.id}</div>
-                <div className="text-sm">{o.createdAt ? new Date(o.createdAt).toLocaleString() : ''}</div>
+    <>
+      <SEO
+        title="My Orders | DigitGenius"
+        description="Track your DigitGenius orders, status and details."
+        canonical={location.origin + '/orders'}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3">Orders</h1>
+        {orders.length === 0
+          ? 'No orders'
+          : orders.map((o) => (
+              <div key={o.id} className="card p-4 mb-3">
+                <div className="flex justify-between">
+                  <div className="font-semibold">Order #{o.id}</div>
+                  <div className="text-sm">{o.createdAt ? new Date(o.createdAt).toLocaleString() : ''}</div>
+                </div>
+                <div className="text-sm mb-2">Status: {o.status} • Payment: {(o.paymentMethod || 'cod').toUpperCase()}</div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {o.items.map((it) => (
+                    <Link key={it.id} to={'/products/' + it.id} className="border rounded-xl p-2 hover:shadow">
+                      <div className="font-medium truncate">{it.name}</div>
+                      <div className="text-xs text-slate-600">Qty {it.qty} · ₹{it.price}</div>
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="text-sm mb-2">Status: {o.status} • Payment: {(o.paymentMethod || 'cod').toUpperCase()}</div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {o.items.map((it) => (
-                  <Link key={it.id} to={'/products/' + it.id} className="border rounded-xl p-2 hover:shadow">
-                    <div className="font-medium truncate">{it.name}</div>
-                    <div className="text-xs text-slate-600">Qty {it.qty} · ₹{it.price}</div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-    </main>
+            ))}
+      </main>
+    </>
   )
 }
 
@@ -767,17 +920,24 @@ function AccountForm() {
 function Profile() {
   const [tab, setTab] = React.useState('orders')
   return (
-    <main className="container py-8">
-      <h1 className="text-3xl font-bold mb-3">My Account</h1>
-      <div className="card p-4 mb-4 flex gap-2">
-        <button onClick={() => setTab('orders')} className={tab === 'orders' ? 'btn' : 'btn-outline'}>Orders</button>
-        <button onClick={() => setTab('wishlist')} className={tab === 'wishlist' ? 'btn' : 'btn-outline'}>Wishlist</button>
-        <button onClick={() => setTab('account')} className={tab === 'account' ? 'btn' : 'btn-outline'}>Account</button>
-      </div>
-      {tab === 'orders' && <Orders />}
-      {tab === 'wishlist' && <Wishlist />}
-      {tab === 'account' && <AccountForm />}
-    </main>
+    <>
+      <SEO
+        title="My Account | DigitGenius"
+        description="Manage your profile, wishlist and orders."
+        canonical={location.origin + '/profile'}
+      />
+      <main className="container py-8">
+        <h1 className="text-3xl font-bold mb-3">My Account</h1>
+        <div className="card p-4 mb-4 flex gap-2">
+          <button onClick={() => setTab('orders')} className={tab === 'orders' ? 'btn' : 'btn-outline'}>Orders</button>
+          <button onClick={() => setTab('wishlist')} className={tab === 'wishlist' ? 'btn' : 'btn-outline'}>Wishlist</button>
+          <button onClick={() => setTab('account')} className={tab === 'account' ? 'btn' : 'btn-outline'}>Account</button>
+        </div>
+        {tab === 'orders' && <Orders />}
+        {tab === 'wishlist' && <Wishlist />}
+        {tab === 'account' && <AccountForm />}
+      </main>
+    </>
   )
 }
 
@@ -799,27 +959,33 @@ function Login() {
     }
   }
   return (
-    <main className="container py-10 max-w-xl">
-      <h1 className="text-3xl font-bold mb-6">Login</h1>
-      <form onSubmit={submit} className="card p-6 space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input name="email" type="email" placeholder="you@example.com" className="w-full" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input name="password" type="password" placeholder="••••••••" className="w-full" required />
-        </div>
-        <button className="btn w-full">Login</button>
-        <div className="text-center text-slate-500 text-sm">or</div>
-        <button type="button" onClick={loginWithGoogle} className="btn-outline w-full">Continue with Google</button>
-        {err && <div className="text-red-600 text-sm">{err}</div>}
-      </form>
-    </main>
+    <>
+      <SEO
+        title="Login | DigitGenius"
+        description="Login to your DigitGenius account."
+        canonical={location.origin + '/login'}
+      />
+      <main className="container py-10 max-w-xl">
+        <h1 className="text-3xl font-bold mb-6">Login</h1>
+        <form onSubmit={submit} className="card p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Email</label>
+            <input name="email" type="email" placeholder="you@example.com" className="w-full" required />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Password</label>
+            <input name="password" type="password" placeholder="••••••••" className="w-full" required />
+          </div>
+          <button className="btn w-full">Login</button>
+          <div className="text-center text-slate-500 text-sm">or</div>
+          <button type="button" onClick={loginWithGoogle} className="btn-outline w-full">Continue with Google</button>
+          {err && <div className="text-red-600 text-sm">{err}</div>}
+        </form>
+      </main>
+    </>
   )
 }
 
-/* SIGNUP → Onboarding (no login in-between) */
 function Signup() {
   const { signup } = useAuth()
   const nav = useNavigate()
@@ -829,36 +995,42 @@ function Signup() {
     const fd = new FormData(e.target)
     try {
       await signup(fd.get('name'), fd.get('email'), fd.get('password'))
-      localStorage.setItem('dg_onboard', '1') // mark onboarding required
+      localStorage.setItem('dg_onboard', '1')
       nav('/onboarding', { replace: true })
     } catch (e) {
       setErr(e.message)
     }
   }
   return (
-    <main className="container py-10 max-w-xl">
-      <h1 className="text-3xl font-bold mb-6">Create Account</h1>
-      <form onSubmit={submit} className="card p-6 space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Name</label>
-          <input name="name" placeholder="Full name" className="w-full" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input name="email" type="email" placeholder="you@example.com" className="w-full" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input name="password" type="password" placeholder="Create a password" className="w-full" required />
-        </div>
-        <button className="btn w-full">Sign up</button>
-        {err && <div className="text-red-600 text-sm">{err}</div>}
-      </form>
-    </main>
+    <>
+      <SEO
+        title="Sign up | DigitGenius"
+        description="Create your DigitGenius account."
+        canonical={location.origin + '/signup'}
+      />
+      <main className="container py-10 max-w-xl">
+        <h1 className="text-3xl font-bold mb-6">Create Account</h1>
+        <form onSubmit={submit} className="card p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Name</label>
+            <input name="name" placeholder="Full name" className="w-full" required />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Email</label>
+            <input name="email" type="email" placeholder="you@example.com" className="w-full" required />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Password</label>
+            <input name="password" type="password" placeholder="Create a password" className="w-full" required />
+          </div>
+          <button className="btn w-full">Sign up</button>
+          {err && <div className="text-red-600 text-sm">{err}</div>}
+        </form>
+      </main>
+    </>
   )
 }
 
-/* Onboarding form (called right after signup) */
 function Onboarding() {
   const nav = useNavigate()
   const [form, setForm] = React.useState({
@@ -880,37 +1052,66 @@ function Onboarding() {
     nav('/', { replace: true })
   }
   return (
-    <main className="container py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-2">Complete your profile</h1>
-      <p className="text-slate-600 mb-4">Fill your details to finish signup.</p>
-      <form onSubmit={saveAll} className="card p-6 grid sm:grid-cols-2 gap-3">
-        <label>Name<input value={form.name} onChange={(e) => setField('name', e.target.value)} required /></label>
-        <label>Age<input type="number" value={form.age} onChange={(e) => setField('age', e.target.value)} required /></label>
-        <label>Sex<select value={form.sex} onChange={(e) => setField('sex', e.target.value)} required>
-          <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
-        </select></label>
-        <label>Phone<input value={form.phone} onChange={(e) => setField('phone', e.target.value)} required /></label>
-        <label className="sm:col-span-2">Address<input placeholder="House/Street" value={form.line1} onChange={(e) => setField('line1', e.target.value)} required /></label>
-        <label>City<input value={form.city} onChange={(e) => setField('city', e.target.value)} required /></label>
-        <label>PIN<input value={form.pin} onChange={(e) => setField('pin', e.target.value)} required /></label>
-        <div className="sm:col-span-2"><button className="btn">Save & Continue</button></div>
-      </form>
-    </main>
+    <>
+      <SEO
+        title="Onboarding | DigitGenius"
+        description="Complete your profile to finish signup."
+        canonical={location.origin + '/onboarding'}
+      />
+      <main className="container py-8 max-w-2xl">
+        <h1 className="text-3xl font-bold mb-2">Complete your profile</h1>
+        <p className="text-slate-600 mb-4">Fill your details to finish signup.</p>
+        <form onSubmit={saveAll} className="card p-6 grid sm:grid-cols-2 gap-3">
+          <label>Name<input value={form.name} onChange={(e) => setField('name', e.target.value)} required /></label>
+          <label>Age<input type="number" value={form.age} onChange={(e) => setField('age', e.target.value)} required /></label>
+          <label>Sex<select value={form.sex} onChange={(e) => setField('sex', e.target.value)} required>
+            <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
+          </select></label>
+          <label>Phone<input value={form.phone} onChange={(e) => setField('phone', e.target.value)} required /></label>
+          <label className="sm:col-span-2">Address<input placeholder="House/Street" value={form.line1} onChange={(e) => setField('line1', e.target.value)} required /></label>
+          <label>City<input value={form.city} onChange={(e) => setField('city', e.target.value)} required /></label>
+          <label>PIN<input value={form.pin} onChange={(e) => setField('pin', e.target.value)} required /></label>
+          <div className="sm:col-span-2"><button className="btn">Save & Continue</button></div>
+        </form>
+      </main>
+    </>
   )
 }
 
-/* Redirect to onboarding if token exists but profile missing */
-function OnboardGate() {
-  const nav = useNavigate()
-  React.useEffect(() => {
-    const token = localStorage.getItem('dg_token')
-    const hasProfile = !!localStorage.getItem('dg_profile')
-    const pending = localStorage.getItem('dg_onboard') === '1'
-    if (token && (pending || !hasProfile)) {
-      nav('/onboarding', { replace: true })
-    }
-  }, [])
-  return null
+/* Misc */
+function Success() {
+  return (
+    <>
+      <SEO
+        title="Order Success | DigitGenius"
+        description="Your order has been placed successfully."
+        canonical={location.origin + '/success'}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3">Order placed 🎉</h1>
+        <div>Your items are on the way.</div>
+      </main>
+    </>
+  )
+}
+function Cancel() {
+  return (
+    <>
+      <SEO
+        title="Payment Canceled | DigitGenius"
+        description="Your payment was canceled."
+        canonical={location.origin + '/cancel'}
+      />
+      <main className="container py-8">
+        <h1 className="text-2xl font-bold mb-3">Payment canceled</h1>
+      </main>
+    </>
+  )
+}
+
+function Private({ children }) {
+  const { user } = useAuth()
+  return user ? children : <Navigate to="/login" replace />
 }
 
 /* Chat */
@@ -964,27 +1165,6 @@ function FloatingChat() {
   )
 }
 
-/* Misc */
-function Success() {
-  return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3">Order placed 🎉</h1>
-      <div>Your items are on the way.</div>
-    </main>
-  )
-}
-function Cancel() {
-  return (
-    <main className="container py-8">
-      <h1 className="text-2xl font-bold mb-3">Payment canceled</h1>
-    </main>
-  )
-}
-function Private({ children }) {
-  const { user } = useAuth()
-  return user ? children : <Navigate to="/login" replace />
-}
-
 /* App */
 function App() {
   return (
@@ -992,7 +1172,6 @@ function App() {
       <WishProvider>
         <CartProvider>
           <Nav />
-          <OnboardGate />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
@@ -1001,7 +1180,7 @@ function App() {
             <Route path="/collections/:name" element={<CollectionView />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />
-            {/* Checkout & Orders are PUBLIC now so guests can use them */}
+            {/* Checkout & Orders are PUBLIC so guests can use them */}
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orders" element={<Orders />} />
             {/* Profile stays behind auth */}
