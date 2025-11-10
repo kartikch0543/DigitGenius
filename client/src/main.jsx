@@ -118,13 +118,11 @@ function useCart() {
    Firebase Auth Provider
 ----------------------- */
 function AuthProvider({ children }) {
-  // We'll keep the API the same for the rest of the app:
-  // - user: Firebase user object (or null)
-  // - token: ID token (for APIs if needed)
+  // user: Firebase user object (or null)
+  // token: Firebase ID token (for APIs)
   const [user, setUser] = React.useState(null)
-  const [token, setToken] = React.useState('') // Firebase ID token (optional for APIs that verify)
+  const [token, setToken] = React.useState('')
 
-  // React to auth state
   React.useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u)
@@ -132,7 +130,7 @@ function AuthProvider({ children }) {
         try {
           const idToken = await u.getIdToken()
           setToken(idToken)
-          localStorage.setItem('dg_token', idToken) // keep compatibility
+          localStorage.setItem('dg_token', idToken)
         } catch {
           setToken('')
           localStorage.removeItem('dg_token')
@@ -145,27 +143,21 @@ function AuthProvider({ children }) {
     return () => unsub()
   }, [])
 
-  // Email/password login
   const login = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
-    // onAuthStateChanged will set token + user
   }
 
-  // Signup -> then onboarding (client already does that)
   const signup = async (name, email, password) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password)
-    // Optional: update profile display name (doesn't block)
     try {
       await cred.user.updateProfile?.({ displayName: name })
     } catch {}
   }
 
-  // Google login (used by Login page)
   const loginWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider)
   }
 
-  // Logout
   const logout = async () => {
     await signOut(auth)
   }
@@ -317,7 +309,6 @@ function Home() {
             Discover your next favorite gadget with <span className="text-brand">DigiGenius</span>
           </h1>
         </div>
-        {/* <img src="./public/digi.png" alt="Hero" className="rounded-3xl shadow-lg" /> */}
       </section>
       <hr className="div" />
       <section>
@@ -574,13 +565,18 @@ function Checkout() {
         },
         body: JSON.stringify({ items: cart, address, paymentMethod: payment, upiReference: upiRef || null }),
       })
-      const d = await r.json()
+
+      // ---- SAFER RESPONSE HANDLING (prevents Unexpected end of JSON input) ----
+      const text = await r.text()
+      let d = null
+      try { d = text ? JSON.parse(text) : null } catch {}
       if (r.ok) {
         setCart([])
-        nav('/success?order=' + d.orderId)
+        nav('/success?order=' + (d?.orderId || ''))
       } else {
-        alert(d.message || 'Payment failed')
+        alert((d && (d.message || d.error)) || text || 'Payment failed')
       }
+      // ------------------------------------------------------------------------
     })()
   }
 
@@ -694,7 +690,7 @@ function Orders() {
             <div key={o.id} className="card p-4 mb-3">
               <div className="flex justify-between">
                 <div className="font-semibold">Order #{o.id}</div>
-                <div className="text-sm">{new Date(o.createdAt).toLocaleString()}</div>
+                <div className="text-sm">{o.createdAt ? new Date(o.createdAt).toLocaleString() : ''}</div>
               </div>
               <div className="text-sm mb-2">Status: {o.status} • Payment: {(o.paymentMethod || 'cod').toUpperCase()}</div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
