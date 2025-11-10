@@ -1,5 +1,7 @@
-// client/api/orders/checkout.js
-import { db, verifyIdTokenFromAuthHeader } from "../_firebaseAdmin";
+// Serverless function: POST /api/orders/checkout
+// Stores an order in Vercel KV (Upstash Redis)
+
+import { kv } from "@vercel/kv";
 
 function send(res, status, data) {
   res.status(status);
@@ -7,37 +9,55 @@ function send(res, status, data) {
   res.end(JSON.stringify(data));
 }
 
+async function readJsonBody(req) {
+  if (req.body && typeof req.body === "object") return req.body;
+  return await new Promise((resolve) => {
+    let data = "";
+    req.on("data", (c) => (data += c));
+    req.on("end", () => {
+      try { resolve(JSON.parse(data || "{}")); } catch { resolve({}); }
+    });
+  });
+}
+
 export default async function handler(req, res) {
-  // optional CORS (harmless on same-origin)
+  // Simple CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });
 
   try {
-    const uid = await verifyIdTokenFromAuthHeader(req);
-    if (!uid) return send(res, 401, { error: "Unauthorized" });
+    const { items, address, paymentMethod, upiReference, guestId } = await readJsonBody(req);
 
-    const { items, address, paymentMethod, upiReference } = req.body || {};
+    if (!guestId) return send(res, 400, { error: "Missing guestId" });
     if (!Array.isArray(items) || !items.length) return send(res, 400, { error: "Empty cart" });
 
+    // Keep minimal order item shape
     const cleanItems = items.map(({ id, name, qty, price }) => ({ id, name, qty, price }));
 
-    const ref = await db()
-      .collection("users").doc(uid)
-      .collection("orders")
-      .add({
-        userId: uid,
-        items: cleanItems,
-        address: address || null,
-        paymentMethod: paymentMethod || "cod",
-        payment: { method: paymentMethod || "cod", status: "pending", upiReference: upiReference || null },
-        status: "PLACED",
-        createdAt: new Date()
-      });
+    const orderId = `ord_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const order = {
+      id: orderId,
+      guestId,
+      items: cleanItems,
+      address: address || null,
+      paymentMethod: paymentMethod || "cod",
+      payment: {
+        method: paymentMethod || "cod",
+        status: paymentMethod === "online" ? "paid" : "pending",
+        upiReference: upiReference || null
+      },
+      status: "PLACED",
+      createdAt: Date.now()
+    };
 
-    return send(res, 200, { ok: true, orderId: ref.id });
+    // Save
+    await kv.hset(`order:${orderId}`, order);
+    await kv.lpush(`orders:${guestId}`, orderId);
+
+    return send(res, 200, { ok: true, orderId });
   } catch (e) {
     console.error("checkout error", e);
     return send(res, 500, { error: "Server error" });

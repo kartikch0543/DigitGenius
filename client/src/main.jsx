@@ -15,8 +15,8 @@ import { api } from './lib/api.js'
 import data from './products.json'
 
 /* =========================================================
-   Firebase (Web) — Auth only (Email/Password + Google)
-   Put your Firebase web config in client/.env (see notes below)
+   Firebase (Web) — optional (kept for login/profile)
+   If you don't want auth at all, you can remove this block.
 ========================================================= */
 import { initializeApp } from 'firebase/app'
 import {
@@ -72,6 +72,18 @@ function setDefaultAddress(id) {
 }
 
 /* =========================================================
+   Guest ID (for orders without Firebase auth)
+========================================================= */
+function getGuestId() {
+  let id = localStorage.getItem('dg_guest')
+  if (!id) {
+    id = 'guest_' + Math.random().toString(36).slice(2) + Date.now()
+    localStorage.setItem('dg_guest', id)
+  }
+  return id
+}
+
+/* =========================================================
    Stores (Cart, Auth, Wishlist)
 ========================================================= */
 const CartCtx = React.createContext(),
@@ -119,7 +131,7 @@ function useCart() {
 ----------------------- */
 function AuthProvider({ children }) {
   // user: Firebase user object (or null)
-  // token: Firebase ID token (for APIs)
+  // token: Firebase ID token (for APIs if you keep Firebase-protected endpoints)
   const [user, setUser] = React.useState(null)
   const [token, setToken] = React.useState('')
 
@@ -146,18 +158,15 @@ function AuthProvider({ children }) {
   const login = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
   }
-
   const signup = async (name, email, password) => {
     const cred = await createUserWithEmailAndPassword(auth, email, password)
     try {
       await cred.user.updateProfile?.({ displayName: name })
     } catch {}
   }
-
   const loginWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider)
   }
-
   const logout = async () => {
     await signOut(auth)
   }
@@ -227,6 +236,7 @@ function Nav() {
             </>
           ) : (
             <>
+              <Link className="icon" to="/orders">Orders</Link>
               <Link className="icon" to="/login">Login</Link>
               <Link className="icon" to="/signup">Sign up</Link>
             </>
@@ -561,12 +571,19 @@ function Checkout() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // token header is optional now; guestId is what backend uses
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify({ items: cart, address, paymentMethod: payment, upiReference: upiRef || null }),
+        body: JSON.stringify({
+          items: cart,
+          address,
+          paymentMethod: payment,
+          upiReference: upiRef || null,
+          guestId: getGuestId(), // <<< important
+        }),
       })
 
-      // ---- SAFER RESPONSE HANDLING (prevents Unexpected end of JSON input) ----
+      // Safer response handling
       const text = await r.text()
       let d = null
       try { d = text ? JSON.parse(text) : null } catch {}
@@ -576,7 +593,6 @@ function Checkout() {
       } else {
         alert((d && (d.message || d.error)) || text || 'Payment failed')
       }
-      // ------------------------------------------------------------------------
     })()
   }
 
@@ -640,7 +656,6 @@ function Checkout() {
           {payment === 'online' && (
             <div className="border rounded-xl p-3">
               <div className="text-sm text-slate-600 mb-2">Scan & pay using any UPI app</div>
-              {/* IMPORTANT: if your QR file is in client/public/QR.jpeg, use /QR.jpeg */}
               <img src="/QR.jpeg" alt="UPI QR" className="w-full max-w-sm rounded-lg border" />
               <div className="mt-3 flex flex-col gap-2">
                 <input value={upiRef} onChange={(e) => setUpiRef(e.target.value)} placeholder="UPI reference / transaction ID (optional)" />
@@ -674,11 +689,17 @@ function Orders() {
   const [orders, setOrders] = React.useState([])
   React.useEffect(() => {
     ;(async () => {
+      // Use Guest-Id header (works for guests and logged-in users)
       const r = await fetch(api('/orders/my'), {
-        headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        headers: {
+          'Guest-Id': getGuestId(),
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       })
-      const d = await r.json()
-      if (r.ok) setOrders(d.orders)
+      const txt = await r.text()
+      let d = null
+      try { d = txt ? JSON.parse(txt) : null } catch {}
+      if (r.ok) setOrders(d?.orders || [])
     })()
   }, [token])
   return (
@@ -980,8 +1001,10 @@ function App() {
             <Route path="/collections/:name" element={<CollectionView />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Private><Checkout /></Private>} />
-            <Route path="/orders" element={<Private><Orders /></Private>} />
+            {/* Checkout & Orders are PUBLIC now so guests can use them */}
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/orders" element={<Orders />} />
+            {/* Profile stays behind auth */}
             <Route path="/profile" element={<Private><Profile /></Private>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

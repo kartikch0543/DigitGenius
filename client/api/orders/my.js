@@ -1,5 +1,7 @@
-// client/api/orders/my.js
-import { db, verifyIdTokenFromAuthHeader } from "../_firebaseAdmin";
+// Serverless function: GET /api/orders/my
+// Reads orders for a guest from Vercel KV (Upstash Redis)
+
+import { kv } from "@vercel/kv";
 
 function send(res, status, data) {
   res.status(status);
@@ -8,23 +10,25 @@ function send(res, status, data) {
 }
 
 export default async function handler(req, res) {
+  // Simple CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Guest-Id");
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "GET") return send(res, 405, { error: "Method not allowed" });
 
   try {
-    const uid = await verifyIdTokenFromAuthHeader(req);
-    if (!uid) return send(res, 401, { error: "Unauthorized" });
+    const guestId = req.headers["guest-id"];
+    if (!guestId) return send(res, 400, { error: "Missing Guest-Id header" });
 
-    const snap = await db()
-      .collection("users").doc(uid)
-      .collection("orders")
-      .orderBy("createdAt", "desc")
-      .get();
+    const ids = await kv.lrange(`orders:${guestId}`, 0, -1);
+    const orders = [];
+    for (const id of ids) {
+      const o = await kv.hgetall(`order:${id}`);
+      if (o) orders.push(o);
+    }
+    orders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-    const orders = snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.() ?? null }));
     return send(res, 200, { orders });
   } catch (e) {
     console.error("orders/my error", e);
