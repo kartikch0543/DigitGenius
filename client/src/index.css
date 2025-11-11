@@ -1,106 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@tailwind base;@tailwind components;@tailwind utilities;
+.container{ @apply max-w-7xl mx-auto px-4; }
+.btn{ @apply inline-flex items-center justify-center px-4 py-2 rounded-xl bg-brand text-white font-medium shadow hover:shadow-md transition; }
+.btn-outline{ @apply inline-flex items-center justify-center px-4 py-2 rounded-xl border border-brand text-brand hover:bg-brand hover:text-white transition; }
+.icon{ @apply px-3 py-2 rounded-xl hover:bg-slate-100; }
+.card{ @apply bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg transition; }
+.badge{ @apply inline-flex items-center px-2 py-0.5 text-xs rounded-full bg-emerald-500 text-white; }
+input, select, textarea { @apply border border-slate-300 rounded-xl px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-brand/30; }
+label{ @apply text-sm font-medium; }
+hr.div{ @apply border-slate-200 my-6; }
 
-/* |--------------------------------------------------------------------------
-| CONFIGURATION VARIABLES (Must be defined in tailwind.config.js)
-|--------------------------------------------------------------------------
-| Ensure your tailwind.config.js has custom colors defined, e.g.:
-| colors: { primary: '#0D9488', ... }
-*/
-
-/* |--------------------------------------------------------------------------
-| 1. GLOBAL BASE STYLES & RESETS
-|--------------------------------------------------------------------------
-*/
-
-/* --- Form Elements --- */
-input:not([type="checkbox"]):not([type="radio"]), 
-select, 
-textarea { 
-  /* Base: Border, rounded corners, padding, background */
-  @apply border border-slate-300 rounded-lg px-3 py-2 bg-white;
-  /* Focus: Clear outline, strong focus ring based on primary color */
-  @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary;
-  /* Disabled: Clear visual distinction */
-  @apply disabled:bg-slate-100 disabled:text-slate-500 disabled:cursor-not-allowed;
-  /* Transitions for smooth focus */
-  @apply transition-all duration-150 ease-in-out;
-}
-
-label { 
-  @apply text-sm font-medium text-slate-700; 
-}
-
-/* |--------------------------------------------------------------------------
-| 2. CUSTOM UTILITIES & COMPONENTS
-|--------------------------------------------------------------------------
-*/
-
-@layer components {
-  /* --- Layout --- */
-  .container { 
-    /* Ensures max width, centers, and adds standard padding */
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; 
-  }
-
-  /* --- Buttons --- */
-  .btn-base {
-    /* Shared styles for all buttons (structure, transition, focus) */
-    @apply inline-flex items-center justify-center 
-           px-4 py-2 text-sm font-semibold rounded-lg shadow-sm 
-           transition-all duration-150 ease-in-out 
-           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50;
-  }
-  
-  .btn-primary { 
-    /* Primary Action: Solid background, contrast text, darker hover */
-    @apply btn-base 
-           bg-primary text-white 
-           hover:bg-teal-700 
-           disabled:bg-slate-300 disabled:text-slate-500;
-  }
-  
-  .btn-outline { 
-    /* Secondary Action: Bordered, swaps colors on hover */
-    @apply btn-base 
-           border border-primary text-primary bg-white 
-           hover:bg-primary hover:text-white 
-           disabled:border-slate-300 disabled:text-slate-500 disabled:hover:bg-white;
-  }
-
-  .btn-ghost {
-    /* Low Emphasis: Just text, subtle hover background */
-    @apply btn-base 
-           text-slate-600 bg-transparent 
-           hover:bg-slate-100 hover:text-slate-800 
-           shadow-none border-none;
-  }
-
-
-  /* --- Data Presentation --- */
-  .icon-button { 
-    /* Used for standalone icons like close/menu buttons */
-    @apply p-2 rounded-full text-slate-500 
-           hover:bg-slate-100 hover:text-slate-700 
-           transition-colors; 
-  }
-
-  .card { 
-    /* Standard container for content blocks */
-    @apply bg-white border border-slate-200 rounded-xl 
-           shadow-md hover:shadow-lg transition-shadow duration-300; 
-  }
-
-  .badge-success { 
-    /* Status indicators - Renamed for semantic clarity */
-    @apply inline-flex items-center px-2 py-0.5 text-xs font-medium 
-           rounded-full bg-emerald-100 text-emerald-700; 
-  }
-
-  /* --- Separators --- */
-  .divider { 
-    /* Clean horizontal separator */
-    @apply border-slate-200 my-6; 
-  }
-}
