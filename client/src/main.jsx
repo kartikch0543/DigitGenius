@@ -13,6 +13,7 @@ import {
 import './index.css'
 import { api } from './lib/api.js'
 import data from './products.json'
+import AnalyticsTracker from './AnalyticsTracker' // ✅ GA4 route tracking
 
 /* =========================================================
    Lightweight SEO helper (no deps)
@@ -1199,8 +1200,10 @@ function App() {
   )
 }
 
+/* ========= Mount with Router + GA tracker ========= */
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
+    <AnalyticsTracker /> {/* ✅ sends GA4 page_view on each route change */}
     <App />
   </BrowserRouter>
 )
