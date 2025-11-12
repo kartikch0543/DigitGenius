@@ -1,123 +1,122 @@
-// client/api/chat.js
-// Serverless / API handler — product-aware chat (reads src/products.json)
-
-import fs from 'fs'
-import path from 'path'
-
-function send(res, status, data) {
-  res.statusCode = status
-  res.setHeader('Content-Type', 'application/json')
-  // allow CORS for dev
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-  res.end(JSON.stringify(data))
-}
+// Serverless function: POST /api/chat
+// Proxies chat to Google Generative Language (Gemini) when GEN_API_KEY is present.
+// Falls back to a small FAQ if no key or on errors.
 
 async function readJsonBody(req) {
-  if (req.body && typeof req.body === 'object') return req.body
+  if (req.body && typeof req.body === "object") return req.body;
   return await new Promise((resolve) => {
-    let data = ''
-    req.on('data', (c) => (data += c))
-    req.on('end', () => {
-      try { resolve(JSON.parse(data || '{}')) } catch { resolve({}) }
-    })
-  })
+    let data = "";
+    req.on("data", (c) => (data += c));
+    req.on("end", () => {
+      try { resolve(JSON.parse(data || "{}")); } catch { resolve({}); }
+    });
+  });
 }
 
-function loadProducts() {
-  try {
-    // Adjust path if your products.json is not at src/products.json
-    const p = path.resolve(process.cwd(), 'src', 'products.json')
-    const raw = fs.readFileSync(p, 'utf8')
-    return JSON.parse(raw)
-  } catch (e) {
-    console.error('Failed to load products.json', e)
-    return []
-  }
+function send(res, status, data) {
+  res.status(status);
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(data));
+}
+
+function faqReply(message) {
+  const m = (message || "").toLowerCase();
+  let reply = "I can help with products, warranty, delivery and payments.";
+  if (m.includes("warranty")) reply = "Most items include a 1-year warranty.";
+  else if (m.includes("delivery") || m.includes("shipping")) reply = "Delivery is 3–5 days with tracking.";
+  else if (m.includes("return")) reply = "Returns accepted within 7 days if unused and sealed.";
+  else if (m.includes("earbud") || m.includes("tws")) reply = "Popular: boAt Airdopes, Noise Buds, realme Buds.";
+  else if (m.includes("phone")) reply = "Check Apple, Samsung, realme in the Phones collection.";
+  return reply;
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'OPTIONS') return send(res, 204, {})
-  if (req.method !== 'POST') return send(res, 405, { error: 'Method not allowed' })
+  // Simple CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });
 
   try {
-    const body = await readJsonBody(req)
-    const { message = '', history = [] } = body || {}
-    const msg = (message || '').toLowerCase().trim()
-    const products = loadProducts()
+    const body = await readJsonBody(req);
+    const { message = "", history = [] } = body || {};
 
-    if (!msg && (!Array.isArray(history) || history.length === 0)) {
-      return send(res, 400, { error: 'Missing message' })
+    if (!message && (!Array.isArray(history) || history.length === 0)) {
+      return send(res, 400, { error: "Missing message" });
     }
 
-    // simple finder
-    const find = (q) => {
-      const qq = (q || '').toLowerCase().trim()
-      if (!qq) return []
-      return products.filter(p =>
-        (p.brand || '').toLowerCase().includes(qq) ||
-        (p.name || '').toLowerCase().includes(qq)
-      )
+    // Use Google Generative API only if key available
+    const KEY = process.env.GEN_API_KEY;
+    const MODEL = process.env.GEN_API_MODEL || "models/gemini-1.5"; // change if needed
+
+    if (!KEY) {
+      // No key set -> fallback to simple FAQ
+      const reply = faqReply(message || (history.slice(-1)[0]?.text || ""));
+      return send(res, 200, { reply, source: "faq" });
     }
 
-    // "show/list/find" queries
-    if (msg.startsWith('show') || msg.startsWith('list') || msg.includes('show me') || msg.includes('find')) {
-      let q = message.replace(/show me|show|list|find/ig, '').trim()
-      if (!q) q = message
-      const found = find(q)
-      return send(res, 200, {
-        reply: found.length ? `Found ${found.length} product(s).` : 'No products found.',
-        products: found.map(p => ({ id: p.id, brand: p.brand, name: p.name, price: p.price, warranty: p.specs?.warranty })),
-        source: 'products'
-      })
+    // Build messages for Gemini: system prompt + last N turns + current user message
+    const MAX_TURNS = 8;
+    const systemPrompt = {
+      author: "system",
+      content: [{ type: "text", text: "You are a helpful, friendly assistant for DigitGenius. Answer questions about products, orders, delivery, returns, and site navigation." }]
+    };
+
+    const convo = (history || [])
+      .slice(-MAX_TURNS)
+      .map((m) => ({
+        author: m.role === "user" ? "user" : "assistant",
+        content: [{ type: "text", text: m.text || m }]
+      }));
+
+    convo.push({ author: "user", content: [{ type: "text", text: message }] });
+
+    const payload = {
+      messages: [systemPrompt, ...convo],
+      temperature: 0.2,
+      maxOutputTokens: 512
+    };
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta2/${MODEL}:generateMessage?key=${encodeURIComponent(KEY)}`;
+
+    const r = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const text = await r.text();
+    if (!r.ok) {
+      console.error("Generative API error", r.status, text);
+      // return fallback faq if model fails
+      const fallback = faqReply(message);
+      return send(res, 200, { reply: fallback, source: "fallback", error: text });
     }
 
-    // get lastProductIds from history context if sent
-    const lastProductIds =
-      (history?.slice(-1)[0]?.context?.lastProductIds) ||
-      (history?.find(h => h.context?.lastProductIds)?.context?.lastProductIds) ||
-      []
+    const data = JSON.parse(text);
 
-    // If user asks about warranty / price / description
-    if (msg.includes('warrant') || msg.includes('price') || msg.includes('describe') || msg.includes('how much') || msg.includes('about') || msg.includes('cost')) {
-      // try direct find by name in message first
-      const direct = find(message)
-      const target = direct.length ? direct : (lastProductIds.length ? products.filter(p => lastProductIds.includes(p.id)) : [])
-      if (!target.length) {
-        return send(res, 200, { reply: "I couldn't find a product in context. Try 'show me Samsung' or give a product name." })
-      }
-      if (msg.includes('warrant')) {
-        const r = target.map(p => `${p.brand} ${p.name} — Warranty: ${p.specs?.warranty || 'N/A'}`).join('\n')
-        return send(res, 200, { reply: r, products: target })
-      }
-      if (msg.includes('price') || msg.includes('how much') || msg.includes('cost')) {
-        const r = target.map(p => `${p.brand} ${p.name} — Price: ₹${p.price} (MRP ₹${p.mrp})`).join('\n')
-        return send(res, 200, { reply: r, products: target })
-      }
-      if (msg.includes('describe') || msg.includes('description') || msg.includes('about')) {
-        const r = target.map(p => `${p.brand} ${p.name} — ${p.desc || 'No description available.'}`).join('\n\n')
-        return send(res, 200, { reply: r, products: target })
-      }
+    // Extract reply robustly from known shapes
+    let replyText = "";
+    if (data?.candidates?.[0]?.content) {
+      // content is array of {type: 'text', text: '...'}
+      replyText = data.candidates[0].content.map((c) => c.text || "").join(" ");
+    } else if (data?.output?.[0]?.content) {
+      replyText = data.output[0].content.map((c) => c.text || "").join(" ");
+    } else if (data?.candidates?.[0]?.text) {
+      replyText = data.candidates[0].text;
+    } else if (data?.output_text) {
+      replyText = data.output_text;
+    } else {
+      // last-resort: stringify small portion of raw
+      replyText = (JSON.stringify(data).slice(0, 2000)) || "Sorry, I couldn't parse the model response.";
     }
 
-    // direct product lookup
-    const direct = find(message)
-    if (direct.length) {
-      return send(res, 200, { reply: `Found ${direct.length} product(s).`, products: direct })
-    }
-
-    // fallback FAQ
-    const faq = (() => {
-      if (msg.includes('warranty')) return 'Most items include 6 months – 1 year warranty depending on brand. Ask for a specific product for exact warranty.'
-      if (msg.includes('delivery') || msg.includes('shipping')) return 'Delivery is usually 3–7 days depending on location.'
-      if (msg.includes('return')) return 'Returns accepted within 7 days if unused and sealed.'
-      if (msg.includes('earbud') || msg.includes('tws')) return 'Popular earbud brands here: boAt, Noise, Tribit. Try "show me boAt".'
-      return "Sorry, I didn't understand. Try 'show me Samsung', 'price of iPhone 17 Pro', or 'what's the warranty?' after showing products."
-    })()
-    return send(res, 200, { reply: faq })
+    return send(res, 200, { reply: replyText, raw: data, source: "gemini" });
   } catch (e) {
-    console.error('chat api error', e)
-    return send(res, 500, { reply: 'Server error: ' + e.message })
+    console.error("chat handler error", e);
+    // On error return FAQ so chat doesn't break completely
+    const fallback = faqReply((await readJsonBody(req)).message || "");
+    return send(res, 200, { reply: fallback, source: "error_fallback", error: e.message });
   }
 }
