@@ -1,9 +1,9 @@
 // /api/chat.js
-// Serverless function for Vercel: proxies to Google Generative Language (Gemini)
-// Falls back to a small FAQ if GEN_API_KEY is not set or on model errors.
+// Vercel serverless endpoint. Uses Google Generative API if GEN_API_KEY is set.
+// Otherwise (or on model error) uses a deterministic product-aware FAQ using local products.json
 
-// NOTE: Vercel uses Node 18+ where fetch is available globally.
-// Do NOT put your API key in source control. Set GEN_API_KEY in Vercel env vars.
+import fs from "fs";
+import path from "path";
 
 async function readJsonBody(req) {
   if (req.body && typeof req.body === "object") return req.body;
@@ -19,22 +19,69 @@ async function readJsonBody(req) {
 function send(res, status, data) {
   res.statusCode = status;
   res.setHeader("Content-Type", "application/json");
-  // simple CORS so local dev and deployed frontend can reach it
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.end(JSON.stringify(data));
 }
 
-function faqReply(message) {
+function simpleFaq(message) {
   const m = (message || "").toLowerCase();
-  let reply = "I can help with products, warranty, delivery and payments.";
-  if (m.includes("warranty")) reply = "Most items include a 1-year warranty.";
-  else if (m.includes("delivery") || m.includes("shipping")) reply = "Delivery is 3–5 days with tracking.";
-  else if (m.includes("return")) reply = "Returns accepted within 7 days if unused and sealed.";
-  else if (m.includes("earbud") || m.includes("tws")) reply = "Popular: boAt Airdopes, Noise Buds, realme Buds.";
-  else if (m.includes("phone")) reply = "Check Apple, Samsung, realme in the Phones collection.";
-  return reply;
+  if (m.includes("warranty")) return "Most items include a 6-12 months warranty depending on the brand. Ask about a specific product to get exact warranty.";
+  if (m.includes("delivery") || m.includes("shipping")) return "Delivery time is typically 3–7 business days depending on location.";
+  if (m.includes("return")) return "Returns accepted within 7 days if unused and sealed. Some products have different return policies.";
+  if (m.includes("price") || m.includes("cost")) return "Ask for a brand or product name and I can give current prices.";
+  return "I can help with products, warranty, delivery and prices. Ask for a brand (e.g., 'show me Samsung') or a product name.";
+}
+
+// load products.json once (synchronous read is fine for serverless cold start)
+let PRODUCTS = [];
+try {
+  const p = path.join(process.cwd(), "products.json");
+  const raw = fs.readFileSync(p, "utf8");
+  PRODUCTS = JSON.parse(raw);
+} catch (e) {
+  console.warn("Could not load products.json:", e.message);
+  PRODUCTS = [];
+}
+
+// product search helpers
+function findByBrandOrName(q) {
+  const s = (q || "").toLowerCase();
+  // match brand exactly or substring in name
+  const byBrand = PRODUCTS.filter((p) => (p.brand || "").toLowerCase().includes(s));
+  const byName = PRODUCTS.filter((p) => (p.name || "").toLowerCase().includes(s));
+  // merge unique
+  const ids = new Set();
+  const res = [];
+  for (const item of [...byBrand, ...byName]) {
+    if (!ids.has(item.id)) { ids.add(item.id); res.push(item); }
+  }
+  return res;
+}
+
+function findByIds(ids = []) {
+  const set = new Set(ids);
+  return PRODUCTS.filter((p) => set.has(p.id));
+}
+
+function productSummaryList(items, max = 6) {
+  if (!items || items.length === 0) return "No products found.";
+  const slice = items.slice(0, max);
+  const lines = slice.map((p) => `${p.name} (id: ${p.id}) — ₹${p.price} • ${p.warranty || p.specs?.warranty || "warranty N/A"}`);
+  const more = items.length > max ? `\nAnd ${items.length - max} more...` : "";
+  return `Found ${items.length} product(s):\n` + lines.join("\n") + more;
+}
+
+// Determine user intent simply
+function detectIntent(message) {
+  const m = (message || "").toLowerCase();
+  if (m.match(/\b(show|list|search|find|show me)\b/) || m.match(/\b(all|which)\b/)) {
+    return "search";
+  }
+  if (m.includes("warranty")) return "warranty";
+  if (m.includes("price") || m.includes("cost") || m.includes("how much")) return "price";
+  return "general";
 }
 
 export default async function handler(req, res) {
@@ -49,27 +96,110 @@ export default async function handler(req, res) {
   }
 
   const { message = "", history = [] } = body || {};
-
   if (!message && (!Array.isArray(history) || history.length === 0)) {
     return send(res, 400, { error: "Missing message" });
   }
 
+  // --- 1) Product-aware deterministic handler (fast, works without API key)
   try {
-    const KEY = process.env.GEN_API_KEY || "";
-    // default model (can override with GEN_API_MODEL env var)
-    const MODEL = process.env.GEN_API_MODEL || "models/gemini-1.5";
+    const intent = detectIntent(message);
+    // If user asked to show brand/product -> search
+    if (intent === "search") {
+      // try to find brand or product words from message
+      const tokens = message.split(/[\s,?.!]+/).filter(Boolean);
+      // try longest token and also full message
+      const queryCandidates = [
+        message,
+        ...tokens.slice().reverse(), // check bigger tokens last
+      ];
 
-    // If no key provided — respond with local FAQ fallback
-    if (!KEY) {
-      const reply = faqReply(message || (history.slice(-1)[0]?.text || ""));
-      return send(res, 200, { reply, source: "faq" });
+      let found = [];
+      for (const q of queryCandidates) {
+        found = findByBrandOrName(q);
+        if (found.length) break;
+      }
+
+      // If nothing found, try using last assistant context for lastProductIds in history (if any)
+      if (!found.length) {
+        const last = (history || []).slice().reverse().find(h => h.context && h.context.lastProductIds);
+        if (last) {
+          found = findByIds(last.context.lastProductIds || []);
+        }
+      }
+
+      if (found.length) {
+        const reply = productSummaryList(found, 8);
+        const lastProductIds = found.map(p => p.id);
+        return send(res, 200, { reply, source: "products", context: { lastProductIds } });
+      }
+
+      // Nothing matched -> fallback FAQ message
+      const fallback = `I couldn't find products matching "${message}". Try a brand name (Samsung, Apple) or a product model.`;
+      return send(res, 200, { reply: fallback, source: "products_none" });
     }
 
-    // Build system prompt + last N turns
+    // If asking warranty or price and there's context (lastProductIds in client history)
+    if (intent === "warranty" || intent === "price") {
+      // Check lastProductIds from history context
+      let lastProductIds = [];
+      // 1) if user says "warranty of <brand>" - try that
+      const brandMatches = findByBrandOrName(message);
+      if (brandMatches.length) lastProductIds = brandMatches.map(p => p.id);
+
+      // 2) else search for product ids in history context
+      if (!lastProductIds.length) {
+        for (let i = history.length - 1; i >= 0; i--) {
+          const h = history[i];
+          if (h.context && h.context.lastProductIds && h.context.lastProductIds.length) {
+            lastProductIds = h.context.lastProductIds;
+            break;
+          }
+        }
+      }
+
+      // 3) If still empty, try naive name search
+      if (!lastProductIds.length) {
+        const sres = findByBrandOrName(message);
+        if (sres.length) lastProductIds = sres.map(p => p.id);
+      }
+
+      if (!lastProductIds.length) {
+        return send(res, 200, { reply: "Which product/brand do you mean? For example: 'warranty for Samsung Galaxy Tab S10' or first ask 'show me Samsung'." });
+      }
+
+      const prods = findByIds(lastProductIds);
+      if (!prods.length) return send(res, 200, { reply: "Couldn't find product details." });
+
+      // Build reply
+      if (intent === "warranty") {
+        const lines = prods.map(p => `${p.name} (id:${p.id}) — warranty: ${p.specs?.warranty || p.warranty || "N/A"} · price: ₹${p.price}`);
+        return send(res, 200, { reply: lines.join("\n"), source: "warranty", context: { lastProductIds } });
+      } else {
+        // price
+        const lines = prods.map(p => `${p.name} (id:${p.id}) — ₹${p.price} (MRP ₹${p.mrp})`);
+        return send(res, 200, { reply: lines.join("\n"), source: "price", context: { lastProductIds } });
+      }
+    }
+  } catch (e) {
+    console.error("product handler error", e);
+    // continue to generative model path
+  }
+
+  // --- 2) If GEN_API_KEY set -> call Gemini (non-blocking fallback above)
+  const KEY = process.env.GEN_API_KEY;
+  const MODEL = process.env.GEN_API_MODEL || "models/gemini-1.5";
+
+  if (!KEY) {
+    // final fallback: simple faq
+    return send(res, 200, { reply: simpleFaq(message), source: "faq_final" });
+  }
+
+  try {
+    // Build system + convo from history
     const MAX_TURNS = 8;
     const systemPrompt = {
       author: "system",
-      content: [{ type: "text", text: "You are a helpful, friendly assistant for DigitGenius. Answer questions about products, orders, delivery, returns, and site navigation." }]
+      content: [{ type: "text", text: "You are a helpful assistant for DigitGenius ecommerce site. Answer short and actionable." }]
     };
 
     const convo = (history || [])
@@ -78,7 +208,6 @@ export default async function handler(req, res) {
         author: m.role === "user" ? "user" : "assistant",
         content: [{ type: "text", text: m.text || (typeof m === "string" ? m : "") }]
       }));
-
     convo.push({ author: "user", content: [{ type: "text", text: message }] });
 
     const payload = {
@@ -96,35 +225,22 @@ export default async function handler(req, res) {
     });
 
     const text = await r.text();
-
     if (!r.ok) {
       console.error("Generative API error", r.status, text);
-      // fallback to FAQ (so user's chat doesn't break)
-      const fallback = faqReply(message);
-      return send(res, 200, { reply: fallback, source: "fallback", error: text });
+      return send(res, 200, { reply: simpleFaq(message), source: "fallback_gemini_error", error: text });
     }
-
     const data = JSON.parse(text);
 
-    // Extract reply robustly from a few possible response shapes
+    // extract reply
     let replyText = "";
-    if (data?.candidates?.[0]?.content) {
-      replyText = data.candidates[0].content.map((c) => c.text || "").join(" ");
-    } else if (data?.output?.[0]?.content) {
-      replyText = data.output[0].content.map((c) => c.text || "").join(" ");
-    } else if (data?.candidates?.[0]?.text) {
-      replyText = data.candidates[0].text;
-    } else if (data?.output_text) {
-      replyText = data.output_text;
-    } else {
-      replyText = (JSON.stringify(data).slice(0, 2000)) || "Sorry, I couldn't parse the model response.";
-    }
+    if (data?.candidates?.[0]?.content) replyText = data.candidates[0].content.map(c => c.text || "").join(" ");
+    else if (data?.output?.[0]?.content) replyText = data.output[0].content.map(c => c.text || "").join(" ");
+    else if (data?.output_text) replyText = data.output_text;
+    else replyText = (JSON.stringify(data).slice(0, 2000)) || "Sorry I couldn't parse the model response.";
 
     return send(res, 200, { reply: replyText, raw: data, source: "gemini" });
   } catch (e) {
-    console.error("chat handler error", e);
-    // On error, fall back gracefully to FAQ
-    const fallback = faqReply(message || "");
-    return send(res, 200, { reply: fallback, source: "error_fallback", error: e.message });
+    console.error("generative error", e);
+    return send(res, 200, { reply: simpleFaq(message), source: "error_fallback", error: e.message });
   }
 }
