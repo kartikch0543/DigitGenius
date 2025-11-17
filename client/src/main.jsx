@@ -1119,151 +1119,65 @@ function Private({ children }) {
 /* ChatModal.jsx */
 /* ChatModal & FloatingChat — REPLACE your existing ChatModal + FloatingChat with this block */
 
-function ChatModal({ onClose }) {
-  // component-local state (self-contained)
-  const [messages, setMessages] = React.useState([
-    { role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }
-  ]);
-  const [text, setText] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const [errorNote, setErrorNote] = React.useState(''); // show server errors inline
-  const listRef = React.useRef();
+const send = async () => {
+  if (!text || !text.trim()) return;
+  const userText = text.trim();
+  setText('');
+  setMessages((m) => [...m, { role: 'user', text: userText }]);
+  setLoading(true);
+  setErrorNote('');
 
-  // auto scroll when messages change
-  React.useEffect(() => {
+  const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
+
+  try {
+    // prefer explicit env var if set; falls back to same origin
+    const base = (import.meta?.env?.VITE_API_URL) ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : window.location.origin;
+    const url = base + '/api/chat';
+    console.log('[chat] POST ->', url, { message: userText, history: history.slice(-3) });
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userText, history }),
+    });
+
+    // attempt safe parse
+    let dataResp;
     try {
-      if (listRef.current) {
-        listRef.current.scrollTop = listRef.current.scrollHeight;
-      }
-    } catch (e) {
-      console.warn('scroll error', e);
+      dataResp = await res.json();
+    } catch (parseErr) {
+      const txt = await res.text().catch(() => '(no body)');
+      console.error('[chat] Response not JSON:', res.status, txt);
+      setMessages((m) => [...m, { role: 'assistant', text: `Server returned unexpected response (status ${res.status}). See console.` }]);
+      setErrorNote(`Server returned non-JSON response (status ${res.status}). Check console/network.`);
+      return;
     }
-  }, [messages]);
 
-  // local mock search (uses `data` imported in your main.jsx)
-  function localProductReply(q) {
-    const ql = (q || '').toLowerCase();
-    const matched = data.filter((p) =>
-      (p.name + ' ' + p.brand + ' ' + (p.keywords || []).join(' ')).toLowerCase().includes(ql)
-    );
-    if (!matched.length) return null;
-    return matched
-      .slice(0, 6)
-      .map((p) => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`)
-      .join('\n');
+    if (!res.ok) {
+      console.error('[chat] Server error', res.status, dataResp);
+      const serverMsg = dataResp?.error || dataResp?.message || dataResp?.reply || JSON.stringify(dataResp).slice(0, 500);
+      setMessages((m) => [...m, { role: 'assistant', text: `Server error: ${serverMsg}` }]);
+      setErrorNote(`Server error: ${res.status}`);
+    } else {
+      const reply = dataResp?.reply || dataResp?.message || dataResp?.text || 'No reply from server';
+      setMessages((m) => [...m, { role: 'assistant', text: reply }]);
+    }
+  } catch (err) {
+    console.error('[chat] fetch failed', err);
+    // fallback to local catalog reply (useful while server down)
+    const localReply = localProductReply(userText);
+    if (localReply) {
+      setMessages((m) => [...m, { role: 'assistant', text: localReply }]);
+      setErrorNote('Using local product catalog (backend unreachable).');
+    } else {
+      setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again.' }]);
+      setErrorNote('Network error — check console & network tab.');
+    }
+  } finally {
+    setLoading(false);
   }
+};
 
-  const send = async () => {
-    // defensive: ensure text exists
-    if (!text || !text.trim()) return;
-    const userText = text.trim();
-    // push user bubble
-    setMessages((m) => [...m, { role: 'user', text: userText }]);
-    setText('');
-    setLoading(true);
-    setErrorNote('');
-
-    // build small history to send
-    const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
-
-    try {
-      // Use absolute origin so it doesn't accidentally resolve to wrong host
-      const url = window.location.origin + '/api/chat';
-      console.log('[chat] sending to', url, { message: userText, history: history.slice(-3) });
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userText, history }),
-      });
-
-      // Try to parse JSON response
-      let dataResp;
-      try {
-        dataResp = await res.json();
-      } catch (parseErr) {
-        const txt = await res.text().catch(() => '(no body)');
-        console.error('[chat] response not JSON', res.status, txt);
-        setMessages((m) => [...m, { role: 'assistant', text: `Server returned unexpected response (status ${res.status})` }]);
-        setErrorNote('Server returned non-JSON response. See console.');
-        return;
-      }
-
-      if (!res.ok) {
-        console.error('[chat] server error', res.status, dataResp);
-        const serverMsg = dataResp?.error || dataResp?.reply || JSON.stringify(dataResp).slice(0, 200);
-        setMessages((m) => [...m, { role: 'assistant', text: `Server error: ${serverMsg}` }]);
-        setErrorNote(`Server error: ${res.status}`);
-      } else {
-        // success — prefer reply field
-        const reply = dataResp?.reply || dataResp?.message || dataResp?.text || 'No reply from server';
-        setMessages((m) => [...m, { role: 'assistant', text: reply }]);
-      }
-    } catch (fetchErr) {
-      // network/CORS/etc — fall back to local product reply (useful while debugging)
-      console.error('[chat] fetch failed', fetchErr);
-      const localReply = localProductReply(userText);
-      if (localReply) {
-        setMessages((m) => [...m, { role: 'assistant', text: localReply }]);
-        setErrorNote('Using local product data (backend unreachable).');
-      } else {
-        setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again.' }]);
-        setErrorNote('Network error — check server or console for details.');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      send();
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center p-4 z-50" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl w-full max-w-md p-3 shadow-lg">
-        <div className="flex justify-between items-center mb-2">
-          <div className="font-semibold">DigitGenius AI Assistant</div>
-          <button onClick={onClose} aria-label="close">✕</button>
-        </div>
-
-        <div ref={listRef} className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={
-                (m.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') +
-                ' px-3 py-2 rounded-xl max-w-[80%] whitespace-pre-wrap'
-              }
-            >
-              {m.text}
-            </div>
-          ))}
-        </div>
-
-        {errorNote ? <div className="text-sm text-red-600 mt-2">{errorNote}</div> : null}
-
-        <div className="flex gap-2 mt-2">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={onKey}
-            placeholder="Type a message"
-            className="flex-1 border rounded-xl px-3 py-2 resize-none"
-            rows={1}
-            disabled={loading}
-          />
-          <button onClick={send} className="btn" disabled={loading}>
-            {loading ? '...' : 'Send'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function FloatingChat() {
   const [open, setOpen] = React.useState(false);
