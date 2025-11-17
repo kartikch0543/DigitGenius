@@ -1129,103 +1129,95 @@ function Private({ children }) {
    (Paste this into main.jsx, replacing old chat code)
    --------------------------- */
 
+/* CLEAN ChatModal — NO red messages, NO warnings, NO debug text */
 function ChatModal({ onClose }) {
   const [messages, setMessages] = React.useState([
-    { role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }
+    { role: "assistant", text: "Hi! Ask me about earbuds, phones, warranty or delivery." }
   ]);
-  const [text, setText] = React.useState('');
+
+  const [text, setText] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const [errorNote, setErrorNote] = React.useState('');
   const listRef = React.useRef(null);
 
   React.useEffect(() => {
-    try { if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight; } catch {}
+    try { listRef.current.scrollTop = listRef.current.scrollHeight; } catch {}
   }, [messages]);
 
   function findLocalProducts(q) {
-    if (!q) return [];
-    const qq = q.toLowerCase();
+    const qq = (q || "").toLowerCase();
     return data.filter((p) =>
-      ((p.name || '') + ' ' + (p.brand || '') + ' ' + (p.keywords || []).join(' '))
-      .toLowerCase()
-      .includes(qq)
+      ((p.name || "") + " " + (p.brand || "") + " " + (p.keywords || []).join(" "))
+        .toLowerCase()
+        .includes(qq)
     );
   }
 
   const send = async () => {
-    if (!text || !text.trim()) return;
-    const userText = text.trim();
-    setText('');
-    setMessages((m) => [...m, { role: 'user', text: userText }]);
-    setLoading(true);
-    setErrorNote('');
+    if (!text.trim()) return;
 
-    const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
+    const userText = text.trim();
+    setText("");
+    setMessages((m) => [...m, { role: "user", text: userText }]);
+    setLoading(true);
+
+    const history = messages.slice(-8);
 
     try {
-      // Use explicit Vite env override if set (dev), otherwise same origin
-      const base = (import.meta?.env?.VITE_API_URL) ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : window.location.origin;
-      const url = base + '/api/chat';
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userText, history }),
       });
 
-      // Try parse JSON
-      let dataResp = null;
+      let resp;
       try {
-        dataResp = await res.json();
-      } catch (parseErr) {
-        console.error('[chat] response not JSON', parseErr);
-        // fallback to local product search
+        resp = await res.json();
+      } catch {
+        // fallback to local products
         const local = findLocalProducts(userText);
         if (local.length) {
-          const reply = local.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
-          setMessages((m) => [...m, { role: 'assistant', text: reply }]);
-          setErrorNote('Displayed local product info because server returned invalid response.');
+          const reply = local
+            .slice(0, 5)
+            .map((p) => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || "1 year"}`)
+            .join("\n");
+          setMessages((m) => [...m, { role: "assistant", text: reply }]);
           return;
         }
-        setMessages((m) => [...m, { role: 'assistant', text: `Server returned unexpected response (status ${res.status}).` }]);
-        setErrorNote('Server returned non-JSON response. See console/network.');
+        setMessages((m) => [...m, { role: "assistant", text: "Sorry, something went wrong." }]);
         return;
       }
 
-      // If backend returned an explicit fallback, use local catalog
-      const genericFaq = "I can help with products, warranty, delivery and payments.";
-      const serverReply = (dataResp && (dataResp.reply || dataResp.message || dataResp.text || '')) || '';
+      const reply = resp?.reply || resp?.message || resp?.text || "";
 
-      const isFaqFallback =
-        (dataResp && (dataResp.source === 'faq' || dataResp.source === 'faq_no_key' || dataResp.source === 'fallback')) ||
-        serverReply.trim().toLowerCase() === genericFaq.toLowerCase();
+      const isFallback =
+        resp?.source === "faq" ||
+        resp?.source === "fallback" ||
+        reply.toLowerCase() === "i can help with products, warranty, delivery and payments.";
 
-      if (isFaqFallback) {
+      if (isFallback) {
         const local = findLocalProducts(userText);
         if (local.length) {
-          const reply = local.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
-          setMessages((m) => [...m, { role: 'assistant', text: reply }]);
-          setErrorNote('Shown local product info because server returned fallback FAQ.');
+          const replyLocal = local
+            .slice(0, 5)
+            .map((p) => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || "1 year"}`)
+            .join("\n");
+          setMessages((m) => [...m, { role: "assistant", text: replyLocal }]);
           return;
         }
-        // no local matches -> show server reply (faq)
-        setMessages((m) => [...m, { role: 'assistant', text: serverReply || genericFaq }]);
-        return;
       }
 
-      // Normal: show the server reply
-      setMessages((m) => [...m, { role: 'assistant', text: serverReply || 'No reply from server.' }]);
-    } catch (err) {
-      console.error('[chat] fetch failed', err);
-      // network -> try local
-      const local = findLocalProducts(text || '');
+      setMessages((m) => [...m, { role: "assistant", text: reply || "No response available." }]);
+
+    } catch {
+      const local = findLocalProducts(userText);
       if (local.length) {
-        const reply = local.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
-        setMessages((m) => [...m, { role: 'assistant', text: reply }]);
-        setErrorNote('Using local product data (backend unreachable).');
+        const reply = local
+          .slice(0, 5)
+          .map((p) => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || "1 year"}`)
+          .join("\n");
+        setMessages((m) => [...m, { role: "assistant", text: reply }]);
       } else {
-        setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again.' }]);
-        setErrorNote('Network error — check console & network tab.');
+        setMessages((m) => [...m, { role: "assistant", text: "Network error." }]);
       }
     } finally {
       setLoading(false);
@@ -1233,32 +1225,55 @@ function ChatModal({ onClose }) {
   };
 
   const onKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); send();
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      send();
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center p-4 z-50" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl w-full max-w-md p-3 shadow-lg">
+    <div
+      className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center p-4 z-50"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-2xl w-full max-w-md p-3 shadow-lg"
+      >
         <div className="flex justify-between items-center mb-2">
           <div className="font-semibold">DigitGenius AI Assistant</div>
-          <button onClick={onClose} aria-label="close">✕</button>
+          <button onClick={onClose}>✕</button>
         </div>
 
         <div ref={listRef} className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
           {messages.map((m, i) => (
-            <div key={i} className={(m.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') + ' px-3 py-2 rounded-xl max-w-[80%] whitespace-pre-wrap'}>
+            <div
+              key={i}
+              className={
+                (m.role === "user"
+                  ? "ml-auto bg-brand text-white"
+                  : "bg-white border") +
+                " px-3 py-2 rounded-xl max-w-[80%] whitespace-pre-wrap"
+              }
+            >
               {m.text}
             </div>
           ))}
         </div>
 
-        {errorNote ? <div className="text-sm text-red-600 mt-2">{errorNote}</div> : null}
-
         <div className="flex gap-2 mt-2">
-          <textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey} placeholder="Type a message" className="flex-1 border rounded-xl px-3 py-2 resize-none" rows={1} disabled={loading} />
-          <button onClick={send} className="btn" disabled={loading}>{loading ? '...' : 'Send'}</button>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={onKey}
+            placeholder="Type a message"
+            className="flex-1 border rounded-xl px-3 py-2 resize-none"
+            rows={1}
+            disabled={loading}
+          />
+          <button onClick={send} className="btn" disabled={loading}>
+            {loading ? "..." : "Send"}
+          </button>
         </div>
       </div>
     </div>
