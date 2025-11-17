@@ -1117,96 +1117,55 @@ function Private({ children }) {
 
 /* Chat */
 /* ChatModal.jsx */
-function ChatModal({ onClose }) {
-  const [messages, setMessages] = React.useState([
-    { role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }
-  ]);
-  const [text, setText] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
-  const listRef = React.useRef();
+const send = async () => {
+  if (!text.trim()) return;
+  const userText = text.trim();
+  setText('');
+  setMessages((m) => [...m, { role: 'user', text: userText }]);
+  setLoading(true);
 
-  // auto scroll to bottom when messages change
-  React.useEffect(() => {
-    try { listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' }); } catch {}
-  }, [messages]);
+  const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
 
-  const send = async () => {
-    if (!text.trim()) return;
-    const userText = text.trim();
-    setText('');
-    setMessages((m) => [...m, { role: 'user', text: userText }]);
-    setLoading(true);
+  try {
+    // Use absolute URL to be explicit:
+    const url = window.location.origin + '/api/chat'; // <-- change if your function lives elsewhere
+    console.log('[chat] POST ->', url, { message: userText, history: history.slice(-3) });
 
-    // Build history for backend: include last N messages (optional)
-    const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userText, history }),
+    });
 
+    // If fetch succeeded but server returned non-OK, read body for more info
+    let data;
     try {
-      // IMPORTANT: make sure this path matches your serverless function route
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userText, history }),
-      });
+      data = await res.json();
+    } catch (parseErr) {
+      const txt = await res.text().catch(() => '(no body)');
+      console.error('[chat] Response not JSON:', res.status, txt);
+      setMessages((m) => [...m, { role: 'assistant', text: `Server returned unexpected response (status ${res.status}). Check server logs.` }]);
+      return;
+    }
 
-      const data = await res.json();
-      // prefer server reply, else fallback text
+    if (!res.ok) {
+      console.error('[chat] Server error', res.status, data);
+      const messageFromServer = data?.error || data?.reply || JSON.stringify(data);
+      setMessages((m) => [...m, { role: 'assistant', text: `Server error: ${messageFromServer}` }]);
+    } else {
       const reply = (data && data.reply) || 'Sorry, no response.';
+      console.log('[chat] reply:', reply);
       setMessages((m) => [...m, { role: 'assistant', text: reply }]);
-    } catch (err) {
-      console.error('chat send error', err);
-      setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again.' }]);
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (err) {
+    // This usually indicates network / CORS failure
+    console.error('[chat] fetch failed:', err);
+    setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again. (check console & network tab)' }]);
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const onKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      send();
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center p-4" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl w-full max-w-md p-3">
-        <div className="flex justify-between items-center mb-2">
-          <div className="font-semibold">DigitGenius AI Assistant</div>
-          <button onClick={onClose}>✕</button>
-        </div>
-
-        <div ref={listRef} className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={
-                (m.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') +
-                ' px-3 py-2 rounded-xl max-w-[80%]'
-              }
-            >
-              {m.text}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex gap-2 mt-2">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={onKey}
-            placeholder="Type a message"
-            className="flex-1 border rounded-xl px-3 py-2 resize-none"
-            rows={1}
-            disabled={loading}
-          />
-          <button onClick={send} className="btn" disabled={loading}>
-            {loading ? '...' : 'Send'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function FloatingChat() {
   const [open, setOpen] = React.useState(false)
