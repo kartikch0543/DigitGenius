@@ -1,125 +1,146 @@
-// api/chat.js
-// Defensive serverless handler — returns JSON on errors and supports local products.json
+/* ---------------------------
+   CLEAN ChatModal (no alerts)
+--------------------------- */
 
-import fs from "fs";
-import path from "path";
+function ChatModal({ onClose }) {
+  const [messages, setMessages] = React.useState([
+    { role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }
+  ]);
+  const [text, setText] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const listRef = React.useRef(null);
 
-async function readJsonBody(req) {
-  if (req.body && typeof req.body === "object") return req.body;
-  return await new Promise((resolve) => {
-    let data = "";
-    req.on("data", (c) => (data += c));
-    req.on("end", () => {
-      try { resolve(JSON.parse(data || "{}")); } catch { resolve({}); }
-    });
-  });
-}
+  React.useEffect(() => {
+    try { if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight; } catch {}
+  }, [messages]);
 
-function send(res, status, data) {
-  try {
-    res.statusCode = status;
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    res.end(JSON.stringify(data));
-  } catch (e) {
-    console.error("[chat] send error", e);
+  function findLocalProducts(q) {
+    if (!q) return [];
+    const qq = q.toLowerCase();
+    return data.filter((p) =>
+      ((p.name || '') + ' ' + (p.brand || '') + ' ' + (p.keywords || []).join(' '))
+      .toLowerCase()
+      .includes(qq)
+    );
   }
-}
 
-function faqReply(message) {
-  const q = (message || "").toLowerCase();
-  if (q.includes("warranty")) return "Most items include a 1-year warranty.";
-  if (q.includes("delivery") || q.includes("shipping")) return "Delivery is 3–5 days with tracking.";
-  if (q.includes("return")) return "Returns accepted within 7 days if unopened.";
-  if (q.includes("earbud") || q.includes("tws")) return "Top earbuds: boAt Airdopes, Noise Buds, Realme Buds.";
-  if (q.includes("phone")) return "Popular phones: iPhone, Samsung Galaxy, Realme.";
-  return "I can help with products, warranty, delivery and payments.";
-}
+  const send = async () => {
+    if (!text.trim()) return;
+    const userText = text.trim();
+    setText('');
+    setMessages(m => [...m, { role: 'user', text: userText }]);
+    setLoading(true);
 
-function loadProductsSafe() {
-  try {
-    const candidates = [
-      path.join(process.cwd(), "products.json"),
-      path.join(process.cwd(), "public", "products.json"),
-      path.join(process.cwd(), "api", "products.json"),
-    ];
-    for (const p of candidates) {
-      if (fs.existsSync(p)) {
-        const raw = fs.readFileSync(p, "utf8");
-        return JSON.parse(raw);
+    const history = messages.slice(-8).map(m => ({ role: m.role, text: m.text }));
+
+    try {
+      const base = window.location.origin;
+      const url = base + '/api/chat';
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userText, history }),
+      });
+
+      let dataResp = null;
+      try {
+        dataResp = await res.json();
+      } catch {
+        // fallback: local products
+        const local = findLocalProducts(userText);
+        if (local.length) {
+          const reply = local
+            .slice(0, 6)
+            .map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`)
+            .join('\n');
+          setMessages(m => [...m, { role: 'assistant', text: reply }]);
+          return;
+        }
+        setMessages(m => [...m, { role: 'assistant', text: 'Sorry, something went wrong.' }]);
+        return;
       }
+
+      // reply text from server
+      const reply = dataResp?.reply || dataResp?.text || dataResp?.message || '';
+
+      const generic = "I can help with products, warranty, delivery and payments.";
+      const fallback = (dataResp?.source === 'faq' || dataResp?.source === 'fallback');
+
+      if (fallback || reply.trim().toLowerCase() === generic.toLowerCase()) {
+        const local = findLocalProducts(userText);
+        if (local.length) {
+          const reply2 = local
+            .slice(0, 6)
+            .map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`)
+            .join('\n');
+          setMessages(m => [...m, { role: 'assistant', text: reply2 }]);
+          return;
+        }
+      }
+
+      setMessages(m => [...m, { role: 'assistant', text: reply || generic }]);
+
+    } catch {
+      const local = findLocalProducts(userText);
+      if (local.length) {
+        const reply2 = local
+          .slice(0, 6)
+          .map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`)
+          .join('\n');
+        setMessages(m => [...m, { role: 'assistant', text: reply2 }]);
+      } else {
+        setMessages(m => [...m, { role: 'assistant', text: 'Network error. Try again.' }]);
+      }
+    } finally {
+      setLoading(false);
     }
-  } catch (e) {
-    console.error("[chat] loadProducts error", e);
-  }
-  return [];
-}
+  };
 
-function searchProducts(products, query) {
-  const q = (query || "").toLowerCase();
-  if (!q) return [];
-  return products.filter((p) => ((p.name || "") + " " + (p.brand || "") + " " + (p.keywords || []).join(" ")).toLowerCase().includes(q));
-}
-
-export default async function handler(req, res) {
-  if (req.method === "OPTIONS") return send(res, 204, {});
-  if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });
-
-  try {
-    const body = await readJsonBody(req);
-    const { message = "", history = [] } = body || {};
-    if (!message && (!Array.isArray(history) || history.length === 0)) {
-      return send(res, 400, { error: "Missing message" });
+  const onKey = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
     }
+  };
 
-    const products = loadProductsSafe();
-    const matched = searchProducts(products, message);
+  return (
+    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center p-4 z-50" onClick={onClose}>
+      <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl w-full max-w-md p-3 shadow-lg">
+        
+        <div className="flex justify-between items-center mb-2">
+          <div className="font-semibold">DigitGenius AI Assistant</div>
+          <button onClick={onClose}>✕</button>
+        </div>
 
-    // If no key -> fallback to FAQ/local products
-    const KEY = process.env.GEN_API_KEY || "";
-    if (!KEY) {
-      const reply = matched.length
-        ? `Found ${matched.length} product(s):\n` + matched.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join("\n")
-        : faqReply(message);
-      return send(res, 200, { reply, source: "faq_no_key", products: matched.slice(0,6) });
-    }
+        <div ref={listRef} className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
+          {messages.map((m, i) => (
+            <div key={i}
+              className={(m.role === 'user'
+                ? 'ml-auto bg-brand text-white'
+                : 'bg-white border') +
+                ' px-3 py-2 rounded-xl max-w-[80%] whitespace-pre-wrap'}>
+              {m.text}
+            </div>
+          ))}
+        </div>
 
-    // Otherwise call Gemini
-    const MODEL = process.env.GEN_API_MODEL || "models/gemini-1.5";
-    const productContext = matched.length ? matched.slice(0,6).map(p => `${p.brand} ${p.name} — Price: ${p.price}, Warranty: ${p.warranty || 'N/A'}`).join("\n") : "No matching products found in catalog.";
+        <div className="flex gap-2 mt-2">
+          <textarea
+            value={text}
+            onChange={e => setText(e.target.value)}
+            onKeyDown={onKey}
+            placeholder="Type a message"
+            className="flex-1 border rounded-xl px-3 py-2 resize-none"
+            rows={1}
+            disabled={loading}
+          />
+          <button onClick={send} className="btn" disabled={loading}>
+            {loading ? '...' : 'Send'}
+          </button>
+        </div>
 
-    const systemPrompt = {
-      author: "system",
-      content: [{ type: "text", text: "You are DigitGenius assistant. Use ONLY the product info below when giving product details.\n\n" + productContext }]
-    };
-
-    const convo = (history || []).slice(-6).map(m => ({ author: m.role === 'user' ? 'user' : 'assistant', content: [{ type: "text", text: m.text }] }));
-    convo.push({ author: "user", content: [{ type: "text", text: message }] });
-
-    const payload = { messages: [systemPrompt, ...convo], temperature: 0.2, maxOutputTokens: 300 };
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta2/${MODEL}:generateMessage?key=${encodeURIComponent(KEY)}`;
-
-    const r = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    const text = await r.text();
-    if (!r.ok) {
-      console.error("[chat] generative API error", r.status, text && text.slice(0, 1000));
-      return send(res, 200, { reply: faqReply(message), source: "fallback_error", error: { status: r.status, body: text && text.slice(0,1000) } });
-    }
-    let dataModel;
-    try { dataModel = text ? JSON.parse(text) : null; } catch (e) { console.error("[chat] parse model JSON", e); return send(res, 200, { reply: faqReply(message), source: "fallback_error", error: "invalid_json_from_model" }); }
-
-    // extract reply
-    let reply = "";
-    if (dataModel?.candidates?.[0]?.content) reply = dataModel.candidates[0].content.map(c => c.text || "").join(" ");
-    else if (dataModel?.output_text) reply = dataModel.output_text;
-    else if (dataModel?.candidates?.[0]?.text) reply = dataModel.candidates[0].text;
-    else reply = JSON.stringify(dataModel).slice(0,1000);
-
-    return send(res, 200, { reply, source: "gemini", products: matched.slice(0,6) });
-  } catch (err) {
-    console.error("[chat] handler error", err);
-    return send(res, 500, { error: "internal_server_error", message: String(err && err.message || err) });
-  }
+      </div>
+    </div>
+  );
 }
