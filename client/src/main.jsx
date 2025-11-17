@@ -1116,26 +1116,57 @@ function Private({ children }) {
 }
 
 /* Chat */
+/* ChatModal.jsx */
 function ChatModal({ onClose }) {
-  const [m, setM] = React.useState([{ role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }])
-  const [t, setT] = React.useState('')
+  const [messages, setMessages] = React.useState([
+    { role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }
+  ]);
+  const [text, setText] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const listRef = React.useRef();
+
+  // auto scroll to bottom when messages change
+  React.useEffect(() => {
+    try { listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' }); } catch {}
+  }, [messages]);
+
   const send = async () => {
-    if (!t.trim()) return
-    const s = t
-    setT('')
-    setM((x) => [...x, { role: 'user', text: s }])
+    if (!text.trim()) return;
+    const userText = text.trim();
+    setText('');
+    setMessages((m) => [...m, { role: 'user', text: userText }]);
+    setLoading(true);
+
+    // Build history for backend: include last N messages (optional)
+    const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
+
     try {
-      const r = await fetch(api('/chat'), {
+      // IMPORTANT: make sure this path matches your serverless function route
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: s }),
-      })
-      const d = await r.json()
-      setM((x) => [...x, { role: 'assistant', text: d.reply || '…' }])
-    } catch (e) {
-      setM((x) => [...x, { role: 'assistant', text: 'Network error' }])
+        body: JSON.stringify({ message: userText, history }),
+      });
+
+      const data = await res.json();
+      // prefer server reply, else fallback text
+      const reply = (data && data.reply) || 'Sorry, no response.';
+      setMessages((m) => [...m, { role: 'assistant', text: reply }]);
+    } catch (err) {
+      console.error('chat send error', err);
+      setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again.' }]);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  const onKey = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center p-4" onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl w-full max-w-md p-3">
@@ -1143,19 +1174,40 @@ function ChatModal({ onClose }) {
           <div className="font-semibold">DigitGenius AI Assistant</div>
           <button onClick={onClose}>✕</button>
         </div>
-        <div className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
-          {m.map((x, i) => (
-            <div key={i} className={(x.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') + ' px-3 py-2 rounded-xl max-w-[80%]'}>{x.text}</div>
+
+        <div ref={listRef} className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
+          {messages.map((m, i) => (
+            <div
+              key={i}
+              className={
+                (m.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') +
+                ' px-3 py-2 rounded-xl max-w-[80%]'
+              }
+            >
+              {m.text}
+            </div>
           ))}
         </div>
+
         <div className="flex gap-2 mt-2">
-          <input value={t} onChange={(e) => setT(e.target.value)} placeholder="Type a message" className="flex-1 border rounded-xl px-3 py-2" />
-          <button onClick={send} className="btn">Send</button>
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={onKey}
+            placeholder="Type a message"
+            className="flex-1 border rounded-xl px-3 py-2 resize-none"
+            rows={1}
+            disabled={loading}
+          />
+          <button onClick={send} className="btn" disabled={loading}>
+            {loading ? '...' : 'Send'}
+          </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
+
 function FloatingChat() {
   const [open, setOpen] = React.useState(false)
   return (
