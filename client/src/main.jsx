@@ -1124,8 +1124,12 @@ function Private({ children }) {
    Self-contained, safe version
    --------------------------- */
 
+/* ---------------------------
+   ChatModal & FloatingChat
+   (Paste this into main.jsx, replacing old chat code)
+   --------------------------- */
+
 function ChatModal({ onClose }) {
-  // component-local state
   const [messages, setMessages] = React.useState([
     { role: 'assistant', text: 'Hi! Ask me about earbuds, phones, warranty or delivery.' }
   ]);
@@ -1134,24 +1138,20 @@ function ChatModal({ onClose }) {
   const [errorNote, setErrorNote] = React.useState('');
   const listRef = React.useRef(null);
 
-  // auto-scroll
   React.useEffect(() => {
-    try {
-      if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
-    } catch {}
+    try { if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight; } catch {}
   }, [messages]);
 
-  // helper: local product reply (falls back if server unreachable)
-  function localProductReply(q) {
-    if (!q) return null;
+  function findLocalProducts(q) {
+    if (!q) return [];
     const qq = q.toLowerCase();
-    const matched = data.filter((p) => ((p.name || '') + ' ' + (p.brand || '') + ' ' + (p.keywords || []).join(' '))
-      .toLowerCase().includes(qq));
-    if (!matched.length) return null;
-    return matched.slice(0, 6).map((p) => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
+    return data.filter((p) =>
+      ((p.name || '') + ' ' + (p.brand || '') + ' ' + (p.keywords || []).join(' '))
+      .toLowerCase()
+      .includes(qq)
+    );
   }
 
-  // DO NOT create any top-level send — keep it inside ChatModal
   const send = async () => {
     if (!text || !text.trim()) return;
     const userText = text.trim();
@@ -1160,11 +1160,10 @@ function ChatModal({ onClose }) {
     setLoading(true);
     setErrorNote('');
 
-    // small history
     const history = messages.slice(-8).map((m) => ({ role: m.role, text: m.text }));
 
     try {
-      // prefer explicit env override in dev: VITE_API_URL, otherwise same origin
+      // Use explicit Vite env override if set (dev), otherwise same origin
       const base = (import.meta?.env?.VITE_API_URL) ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : window.location.origin;
       const url = base + '/api/chat';
 
@@ -1174,32 +1173,55 @@ function ChatModal({ onClose }) {
         body: JSON.stringify({ message: userText, history }),
       });
 
-      // parse safe
+      // Try parse JSON
       let dataResp = null;
       try {
         dataResp = await res.json();
       } catch (parseErr) {
-        const txt = await res.text().catch(() => '(no body)');
-        console.error('[chat] response not JSON', res.status, txt);
-        setMessages((m) => [...m, { role: 'assistant', text: `Server returned unexpected response (status ${res.status}). See console.` }]);
+        console.error('[chat] response not JSON', parseErr);
+        // fallback to local product search
+        const local = findLocalProducts(userText);
+        if (local.length) {
+          const reply = local.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
+          setMessages((m) => [...m, { role: 'assistant', text: reply }]);
+          setErrorNote('Displayed local product info because server returned invalid response.');
+          return;
+        }
+        setMessages((m) => [...m, { role: 'assistant', text: `Server returned unexpected response (status ${res.status}).` }]);
         setErrorNote('Server returned non-JSON response. See console/network.');
         return;
       }
 
-      if (!res.ok) {
-        console.error('[chat] server error', res.status, dataResp);
-        const serverMsg = dataResp?.error || dataResp?.reply || dataResp?.message || JSON.stringify(dataResp).slice(0, 300);
-        setMessages((m) => [...m, { role: 'assistant', text: `Server error: ${serverMsg}` }]);
-        setErrorNote(`Server error: ${res.status}`);
-      } else {
-        const reply = dataResp?.reply || dataResp?.message || dataResp?.text || 'No reply from server';
-        setMessages((m) => [...m, { role: 'assistant', text: reply }]);
+      // If backend returned an explicit fallback, use local catalog
+      const genericFaq = "I can help with products, warranty, delivery and payments.";
+      const serverReply = (dataResp && (dataResp.reply || dataResp.message || dataResp.text || '')) || '';
+
+      const isFaqFallback =
+        (dataResp && (dataResp.source === 'faq' || dataResp.source === 'faq_no_key' || dataResp.source === 'fallback')) ||
+        serverReply.trim().toLowerCase() === genericFaq.toLowerCase();
+
+      if (isFaqFallback) {
+        const local = findLocalProducts(userText);
+        if (local.length) {
+          const reply = local.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
+          setMessages((m) => [...m, { role: 'assistant', text: reply }]);
+          setErrorNote('Shown local product info because server returned fallback FAQ.');
+          return;
+        }
+        // no local matches -> show server reply (faq)
+        setMessages((m) => [...m, { role: 'assistant', text: serverReply || genericFaq }]);
+        return;
       }
-    } catch (fetchErr) {
-      console.error('[chat] fetch failed', fetchErr);
-      const fallback = localProductReply(userText);
-      if (fallback) {
-        setMessages((m) => [...m, { role: 'assistant', text: fallback }]);
+
+      // Normal: show the server reply
+      setMessages((m) => [...m, { role: 'assistant', text: serverReply || 'No reply from server.' }]);
+    } catch (err) {
+      console.error('[chat] fetch failed', err);
+      // network -> try local
+      const local = findLocalProducts(text || '');
+      if (local.length) {
+        const reply = local.slice(0,6).map(p => `${p.brand} ${p.name} — ₹${p.price}. Warranty: ${p.warranty || '1 year'}`).join('\n');
+        setMessages((m) => [...m, { role: 'assistant', text: reply }]);
         setErrorNote('Using local product data (backend unreachable).');
       } else {
         setMessages((m) => [...m, { role: 'assistant', text: 'Network error — please try again.' }]);
@@ -1212,8 +1234,7 @@ function ChatModal({ onClose }) {
 
   const onKey = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      send();
+      e.preventDefault(); send();
     }
   };
 
@@ -1227,13 +1248,7 @@ function ChatModal({ onClose }) {
 
         <div ref={listRef} className="h-72 overflow-auto space-y-2 bg-slate-50 p-2 rounded">
           {messages.map((m, i) => (
-            <div
-              key={i}
-              className={
-                (m.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') +
-                ' px-3 py-2 rounded-xl max-w-[80%] whitespace-pre-wrap'
-              }
-            >
+            <div key={i} className={(m.role === 'user' ? 'ml-auto bg-brand text-white' : 'bg-white border') + ' px-3 py-2 rounded-xl max-w-[80%] whitespace-pre-wrap'}>
               {m.text}
             </div>
           ))}
@@ -1242,18 +1257,8 @@ function ChatModal({ onClose }) {
         {errorNote ? <div className="text-sm text-red-600 mt-2">{errorNote}</div> : null}
 
         <div className="flex gap-2 mt-2">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={onKey}
-            placeholder="Type a message"
-            className="flex-1 border rounded-xl px-3 py-2 resize-none"
-            rows={1}
-            disabled={loading}
-          />
-          <button onClick={send} className="btn" disabled={loading}>
-            {loading ? '...' : 'Send'}
-          </button>
+          <textarea value={text} onChange={(e) => setText(e.target.value)} onKeyDown={onKey} placeholder="Type a message" className="flex-1 border rounded-xl px-3 py-2 resize-none" rows={1} disabled={loading} />
+          <button onClick={send} className="btn" disabled={loading}>{loading ? '...' : 'Send'}</button>
         </div>
       </div>
     </div>
@@ -1269,7 +1274,6 @@ function FloatingChat() {
     </>
   );
 }
-
 
 /* App */
 function App() {
