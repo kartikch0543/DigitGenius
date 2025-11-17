@@ -1,6 +1,9 @@
 // Serverless function: POST /api/chat
-// Proxies chat to Google Generative Language (Gemini) when GEN_API_KEY is present.
-// Falls back to a small FAQ if no key or on errors.
+// Uses Gemini + Product Catalog search for real product-based responses.
+
+import products from "./products.json" assert { type: "json" };
+
+// ---------------------- HELPERS -------------------------
 
 async function readJsonBody(req) {
   if (req.body && typeof req.body === "object") return req.body;
@@ -19,21 +22,70 @@ function send(res, status, data) {
   res.end(JSON.stringify(data));
 }
 
-function faqReply(message) {
-  const m = (message || "").toLowerCase();
-  let reply = "I can help with products, warranty, delivery and payments.";
-  if (m.includes("warranty")) reply = "Most items include a 1-year warranty.";
-  else if (m.includes("delivery") || m.includes("shipping")) reply = "Delivery is 3–5 days with tracking.";
-  else if (m.includes("return")) reply = "Returns accepted within 7 days if unused and sealed.";
-  else if (m.includes("earbud") || m.includes("tws")) reply = "Popular: boAt Airdopes, Noise Buds, realme Buds.";
-  else if (m.includes("phone")) reply = "Check Apple, Samsung, realme in the Phones collection.";
-  return reply;
+// search products by keywords or brand
+function searchProducts(query) {
+  const q = query.toLowerCase();
+  return products.filter(
+    (p) =>
+      p.brand.toLowerCase().includes(q) ||
+      p.name.toLowerCase().includes(q) ||
+      (p.keywords && p.keywords.some((k) => k.toLowerCase().includes(q)))
+  );
 }
 
+// Convert product list → readable text for Gemini
+function buildProductContext(query) {
+  const matched = searchProducts(query);
+
+  if (matched.length === 0) return "No matching products found in catalog.";
+
+  return (
+    "Matching Products:\n" +
+    matched
+      .map(
+        (p) =>
+          `• ${p.brand} ${p.name} — Price: ${p.price}, RAM: ${p.ram || "N/A"}, Storage: ${
+            p.storage || "N/A"
+          }, GPU: ${p.gpu || "N/A"}, Battery: ${p.battery || "N/A"}, Warranty: ${
+            p.warranty || "N/A"
+          }`
+      )
+      .join("\n")
+  );
+}
+
+// FAQ fallback
+function faqReply(message) {
+  const q = (message || "").toLowerCase();
+
+  if (q.includes("warranty")) return "Most items include a 1-year warranty.";
+  if (q.includes("delivery")) return "Delivery takes 3–5 days with tracking.";
+  if (q.includes("return")) return "Returns accepted within 7 days if unopened.";
+  if (q.includes("earbud")) return "Top earbuds: boAt Airdopes, Noise Buds, Realme Buds.";
+  if (q.includes("phone")) return "Popular phones: iPhone, Samsung Galaxy, Realme.";
+
+  return "I can help with products, pricing, specs, delivery, warranty, and more.";
+}
+
+// Extract text from Gemini response
+function extractReply(data) {
+  try {
+    if (data?.candidates?.[0]?.content)
+      return data.candidates[0].content.map((c) => c.text || "").join(" ");
+    if (data?.output_text) return data.output_text;
+    if (data?.candidates?.[0]?.text) return data.candidates[0].text;
+    return JSON.stringify(data).slice(0, 500);
+  } catch {
+    return "Sorry, I could not generate a reply.";
+  }
+}
+
+// ---------------------- MAIN HANDLER -------------------------
+
 export default async function handler(req, res) {
-  // Simple CORS
+  // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });
@@ -42,81 +94,76 @@ export default async function handler(req, res) {
     const body = await readJsonBody(req);
     const { message = "", history = [] } = body || {};
 
-    if (!message && (!Array.isArray(history) || history.length === 0)) {
-      return send(res, 400, { error: "Missing message" });
-    }
+    if (!message.trim()) return send(res, 400, { error: "Message required" });
 
-    // Use Google Generative API only if key available
     const KEY = process.env.GEN_API_KEY;
-    const MODEL = process.env.GEN_API_MODEL || "models/gemini-1.5"; // change if needed
+    const MODEL = "models/gemini-1.5";
 
+    // If API key missing → fallback
     if (!KEY) {
-      // No key set -> fallback to simple FAQ
-      const reply = faqReply(message || (history.slice(-1)[0]?.text || ""));
-      return send(res, 200, { reply, source: "faq" });
+      return send(res, 200, { reply: faqReply(message), source: "faq_no_key" });
     }
 
-    // Build messages for Gemini: system prompt + last N turns + current user message
-    const MAX_TURNS = 8;
+    // build product context FOR THIS MESSAGE
+    const productContext = buildProductContext(message);
+
+    // SYSTEM PROMPT + PRODUCTS
     const systemPrompt = {
       author: "system",
-      content: [{ type: "text", text: "You are a helpful, friendly assistant for DigitGenius. Answer questions about products, orders, delivery, returns, and site navigation." }]
+      content: [
+        {
+          type: "text",
+          text:
+            "You are DigitGenius AI, an expert product assistant. " +
+            "Use ONLY the product catalog provided below when giving product details.\n\n" +
+            productContext
+        }
+      ]
     };
 
-    const convo = (history || [])
-      .slice(-MAX_TURNS)
-      .map((m) => ({
-        author: m.role === "user" ? "user" : "assistant",
-        content: [{ type: "text", text: m.text || m }]
-      }));
-
-    convo.push({ author: "user", content: [{ type: "text", text: message }] });
+    // Build conversation
+    const convo = [
+      systemPrompt,
+      ...history.map((m) => ({
+        author: m.role,
+        content: [{ type: "text", text: m.text }]
+      })),
+      {
+        author: "user",
+        content: [{ type: "text", text: message }]
+      }
+    ];
 
     const payload = {
-      messages: [systemPrompt, ...convo],
+      messages: convo,
       temperature: 0.2,
-      maxOutputTokens: 512
+      maxOutputTokens: 300
     };
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta2/${MODEL}:generateMessage?key=${encodeURIComponent(KEY)}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta2/${MODEL}:generateMessage?key=${KEY}`;
 
     const r = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     const text = await r.text();
     if (!r.ok) {
-      console.error("Generative API error", r.status, text);
-      // return fallback faq if model fails
-      const fallback = faqReply(message);
-      return send(res, 200, { reply: fallback, source: "fallback", error: text });
+      console.error("Gemini API error:", r.status, text);
+      return send(res, 200, { reply: faqReply(message), source: "fallback_error" });
     }
 
     const data = JSON.parse(text);
+    const reply = extractReply(data);
 
-    // Extract reply robustly from known shapes
-    let replyText = "";
-    if (data?.candidates?.[0]?.content) {
-      // content is array of {type: 'text', text: '...'}
-      replyText = data.candidates[0].content.map((c) => c.text || "").join(" ");
-    } else if (data?.output?.[0]?.content) {
-      replyText = data.output[0].content.map((c) => c.text || "").join(" ");
-    } else if (data?.candidates?.[0]?.text) {
-      replyText = data.candidates[0].text;
-    } else if (data?.output_text) {
-      replyText = data.output_text;
-    } else {
-      // last-resort: stringify small portion of raw
-      replyText = (JSON.stringify(data).slice(0, 2000)) || "Sorry, I couldn't parse the model response.";
-    }
-
-    return send(res, 200, { reply: replyText, raw: data, source: "gemini" });
-  } catch (e) {
-    console.error("chat handler error", e);
-    // On error return FAQ so chat doesn't break completely
-    const fallback = faqReply((await readJsonBody(req)).message || "");
-    return send(res, 200, { reply: fallback, source: "error_fallback", error: e.message });
+    return send(res, 200, { reply, source: "gemini", products: productContext });
+  } catch (err) {
+    console.error("Chat error:", err);
+    return send(res, 200, {
+      reply: faqReply(""),
+      source: "server_error",
+      error: err.message
+    });
   }
 }
